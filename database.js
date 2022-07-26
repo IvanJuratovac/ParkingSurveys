@@ -8,7 +8,6 @@ const pool = new Pool({
     port: 5432
 })
 
-
 const insertSurvey = (req, res) => {
     pool.query('insert into survey(name,json) values($1,$2) returning *', [req.query["name"], "{}"], (error, results) => {
         if (error) {
@@ -24,8 +23,6 @@ const insertSurvey = (req, res) => {
 
 const insertResults = (req, res) => {
     const { results } = req.body;
-    console.log(results);
-    console.log("pocinjem insert");
     pool.query('insert into results(json) values($1) returning *', [results], (error, results) => {
         if (error) {
             res.status(503);
@@ -33,7 +30,6 @@ const insertResults = (req, res) => {
         }
         res.status(201).json(results.rows);
     })
-    console.log("zavrsio insert");
 }
 
 const getResults = (req, res) => {

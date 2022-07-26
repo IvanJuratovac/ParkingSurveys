@@ -5,44 +5,49 @@ Survey
     .applyTheme("modern");
 
 const surveyJson = {
-
-    "title": "Anketa za pametne osobe",
-    "description": "Ovdje je anketa",
+    "title": "Anketa",
     "logoPosition": "right",
-    "pages": [
-        {
-            "name": "page1",
-            "elements": [
-                {
-                    "type": "text",
-                    "name": "postojanje",
-                    "title": "Zašto postojimo?",
-                    "isRequired": true
-                },
-                {
-                    "type": "checkbox",
-                    "name": "predmeti",
-                    "title": "Koje predmete ste položili?",
-                    "isRequired": true,
-                    "choices": [
-                        "Web programiranje 2",
-                        "Java",
-                        "C#",
-                        "Mikroračunala"
-                    ]
-                },
-                {
-                    "type": "text",
-                    "name": "dan",
-                    "title": "Koji je današnji dan?",
-                    "isRequired": true
-                }
-            ]
-        }
-    ]
-
-
-};
+    "pages": [{
+        "name": "page1",
+        "elements": [{
+            "type": "checkbox",
+            "name": "boje",
+            "title": "Koje boje volite?",
+            "choices": [{
+                "value": "red",
+                "text": "crvena"
+            },
+            {
+                "value": "blue",
+                "text": "plava"
+            },
+            {
+                "value": "green",
+                "text": "zelena"
+            },
+            {
+                "value": "yellow",
+                "text": "žuta"
+            },
+            {
+                "value": "purple",
+                "text": "ljubičasta"
+            },
+            {
+                "value": "orange",
+                "text": "narandžasta"
+            },
+            {
+                "value": "magenta",
+                "text": "roza"
+            },
+            {
+                "value": "cyan",
+                "text": "tirkizna"
+            }]
+        }]
+    }]
+}
 
 const survey = new Survey.Model(surveyJson);
 
@@ -66,24 +71,10 @@ function sendResults(sender) {
         },
         async: false
     });
-
 }
 
 survey.onComplete.add(sendResults);
 
-$(function () {
-    $("#surveyContainer").Survey({ model: survey });
+$("body").on("click", "#survey", function () {
+    $("#container").Survey({ model: survey });
 });
-
-// function saveSurveyResults(url, json) {
-//     const request = new XMLHttpRequest();
-//     request.open('POST', url);
-//     request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-//     request.addEventListener('load', () => {
-//         // Handle "load"
-//     });
-//     request.addEventListener('error', () => {
-//         // Handle "error"
-//     });
-//     request.send(JSON.stringify(json));
-// }
