@@ -5,8 +5,9 @@ Survey
     .applyTheme("modern");
 
 const surveyJson = {
-    "title": "Najbolja anketa",
-    "description": "Najbolji opis ankete nalazi se ovdje.",
+
+    "title": "Anketa za pametne osobe",
+    "description": "Ovdje je anketa",
     "logoPosition": "right",
     "pages": [
         {
@@ -14,37 +15,33 @@ const surveyJson = {
             "elements": [
                 {
                     "type": "text",
-                    "name": "ime",
-                    "title": "Kako vas zovu?",
+                    "name": "postojanje",
+                    "title": "Zašto postojimo?",
                     "isRequired": true
                 },
                 {
-                    "type": "radiogroup",
-                    "name": "boja",
-                    "title": "Koja ti je omiljena boja?",
+                    "type": "checkbox",
+                    "name": "predmeti",
+                    "title": "Koje predmete ste položili?",
                     "isRequired": true,
                     "choices": [
-                        "crvena",
-                        "plava",
-                        "zelena"
+                        "Web programiranje 2",
+                        "Java",
+                        "C#",
+                        "Mikroračunala"
                     ]
                 },
                 {
-                    "type": "rating",
-                    "name": "ocjena",
-                    "title": "Ocijenite ovu anketu",
+                    "type": "text",
+                    "name": "dan",
+                    "title": "Koji je današnji dan?",
                     "isRequired": true
                 }
             ]
         }
-    ],
-    "triggers": [
-        {
-            "type": "setvalue",
-            "expression": "{ime} empty",
-            "setToName": "ime"
-        }
     ]
+
+
 };
 
 const survey = new Survey.Model(surveyJson);
