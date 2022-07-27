@@ -13,6 +13,7 @@ const surveyJson = {
             "type": "checkbox",
             "name": "boje",
             "title": "Koje boje volite?",
+            "isRequired": true,
             "choices": [{
                 "value": "red",
                 "text": "crvena"

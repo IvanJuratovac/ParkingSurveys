@@ -34,7 +34,7 @@ const insertResults = (req, res) => {
 
 const getResults = (req, res) => {
     const { key } = req.body;
-    console.log(key);
+    //console.log(key);
     pool.query('select count(1), json_array_elements_text(json#>\'{'+key+'}\') as colors from results group by json_array_elements_text(json#>\'{'+key+'}\')', (error, results) => {
         if (error) {
             res.status(504);
