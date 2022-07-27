@@ -33,7 +33,9 @@ const insertResults = (req, res) => {
 }
 
 const getResults = (req, res) => {
-    pool.query('select * from results where id=$1', [req.query["id"]], (error, results) => {
+    const { key } = req.body;
+    console.log(key);
+    pool.query('select count(1), json_array_elements_text(json#>\'{'+key+'}\') as colors from results group by json_array_elements_text(json#>\'{'+key+'}\')', (error, results) => {
         if (error) {
             res.status(504);
             throw error;

@@ -9,23 +9,56 @@ const labels = [
     'tirkizna',
 ];
 
-const data = {
-    labels: labels,
-    datasets: [{
-        label: 'Broj odabira',
-        backgroundColor: ["red", "blue", "green", "yellow", "purple", "orange", "pink", "cyan"],
-        borderColor: ["red", "blue", "green", "yellow", "purple", "orange", "pink", "cyan"],
-        data: [7, 10, 5, 2, 20, 15, 23, 17],
-    }]
-};
-
-const config = {
-    type: 'bar',
-    data: data,
-    options: {}
-};
-
 $("body").on("click", "#chart", function () {
-    $("#container").html("<canvas id=\"chartContainer\"></canvas>")
+    var boje;
+    $.ajax({
+        type: 'POST',
+        url: '/results',
+        data: {
+            "key": "boje"
+        },
+        success: function (data) {
+            boje = data;
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+
+    var counts = [];
+    $.each(boje, function () {
+        counts[this.colors] = this.count;
+    });
+    //console.log(counts);
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Broj odabira',
+            backgroundColor: ["red", "blue", "green", "yellow", "purple", "orange", "magenta", "cyan"],
+            borderColor: ["red", "blue", "green", "yellow", "purple", "orange", "magenta", "cyan"],
+            data: [counts.red, counts.blue, counts.green, counts.yellow, counts.purple, counts.orange, counts.magenta, counts.cyan],
+        }]
+    };
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    };
+
+    $("#container").html("<canvas id=\"chartContainer\"></canvas>");
     const myChart = new Chart(document.getElementById('chartContainer'), config);
 });

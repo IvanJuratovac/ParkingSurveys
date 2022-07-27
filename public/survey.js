@@ -62,7 +62,7 @@ function sendResults(sender) {
         },
         success: function (data) {
             console.log("data sent");
-            console.log(data);
+            //console.log(data);
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -76,5 +76,6 @@ function sendResults(sender) {
 survey.onComplete.add(sendResults);
 
 $("body").on("click", "#survey", function () {
+    survey.clear();
     $("#container").Survey({ model: survey });
 });
