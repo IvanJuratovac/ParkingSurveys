@@ -43,6 +43,10 @@ const surveyJson = {
                 "text": "roza"
             },
             {
+                "value": "brown",
+                "text": "smeđa"
+            },
+            {
                 "value": "cyan",
                 "text": "tirkizna"
             }]
