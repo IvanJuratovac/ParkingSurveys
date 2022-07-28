@@ -2,6 +2,8 @@ const labels = [];
 const backgroundColor = [];
 const titles = [];
 
+
+
 jsonLooper(surveyJson);
 function jsonLooper(obj) {
     for (let k in obj) {
@@ -19,8 +21,16 @@ function jsonLooper(obj) {
         }
     }
 }
+var chartType;
+
+if(backgroundColor.length>5){
+    chartType="bar";
+}
+else{
+    chartType="doughnut";
+}
 function drawChart(chartTitle, index, key) {
-    var boje;
+    var response;
     $.ajax({
         type: 'POST',
         url: '/results',
@@ -28,7 +38,7 @@ function drawChart(chartTitle, index, key) {
             "key": key
         },
         success: function (data) {
-            boje = data;
+            response = data;
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -39,8 +49,8 @@ function drawChart(chartTitle, index, key) {
     });
 
     var counts = [];
-    $.each(boje, function () {
-        counts[this.colors] = this.count;
+    $.each(response, function () {
+        counts[this.name] = this.count;
     });
 
     var colorCounts = [];
@@ -58,7 +68,7 @@ function drawChart(chartTitle, index, key) {
         }]
     };
     const config = {
-        type: 'bar',
+        type: chartType,
         data: data,
         options: {
             responsive: true,
@@ -72,7 +82,7 @@ function drawChart(chartTitle, index, key) {
                     }
                 },
                 legend: {
-                    display: false
+                    display: true
                 }
             }
         }
@@ -84,7 +94,7 @@ function drawChart(chartTitle, index, key) {
 $("body").on("click", "#chart", function () {
     $("#container").html("");
     for (var i = 0; i < titles.length; i++) {
-        drawChart(titles[i], i, "boje");
+        drawChart(titles[i], i, "nebo");
     }
 });
 

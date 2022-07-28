@@ -7,51 +7,29 @@ Survey
 const surveyJson = {
     "title": "Anketa",
     "logoPosition": "right",
-    "pages": [{
-        "name": "page1",
-        "elements": [{
-            "type": "checkbox",
-            "name": "boje",
-            "title": "Koje boje volite?",
-            "isRequired": true,
-            "choices": [{
-                "value": "red",
-                "text": "crvena"
-            },
-            {
-                "value": "blue",
-                "text": "plava"
-            },
-            {
-                "value": "green",
-                "text": "zelena"
-            },
-            {
-                "value": "yellow",
-                "text": "žuta"
-            },
-            {
-                "value": "purple",
-                "text": "ljubičasta"
-            },
-            {
-                "value": "orange",
-                "text": "narandžasta"
-            },
-            {
-                "value": "magenta",
-                "text": "roza"
-            },
-            {
-                "value": "brown",
-                "text": "smeđa"
-            },
-            {
-                "value": "cyan",
-                "text": "tirkizna"
-            }]
-        }]
-    }]
+    "pages": [
+        {
+            "name": "page1",
+            "elements": [
+                {
+                    "type": "radiogroup",
+                    "name": "nebo",
+                    "title": "Je li nebo plave boje",
+                    "isRequired": true,
+                    "choices": [
+                        {
+                            "value": "red",
+                            "text": "da"
+                        },
+                        {
+                            "value": "blue",
+                            "text": "ne"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }
 
 const survey = new Survey.Model(surveyJson);
@@ -77,6 +55,9 @@ function sendResults(sender) {
         async: false
     });
 }
+
+
+
 
 survey.onComplete.add(sendResults);
 

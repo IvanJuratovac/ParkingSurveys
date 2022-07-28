@@ -13,5 +13,6 @@ app.listen(3000, () => {
 app.use('/', express.static('public'));
 
 app.post('/results', db.getResults);
+app.use('/',db.getSurvey)
 
 app.post('/send', db.insertResults);
