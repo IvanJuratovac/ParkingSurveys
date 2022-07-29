@@ -19,7 +19,7 @@ const getSurvey = (req, res) => {
         t=results.rows
         //console.log(t)
         
-               type= t[1].name;
+               type= t[0].name;
                //console.log(type)
         
         res.status(201).json(results.rows);

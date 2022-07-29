@@ -1,8 +1,18 @@
 const labels = [];
+const values = [];
 const backgroundColor = [];
 const titles = [];
 
-
+const chartColors = ["red", "blue", "green", "gold", "purple", "orange", "magenta", "cyan", "brown"];
+var colorIndex = 0;
+function incrementColor() {
+    if (colorIndex < chartColors.length) {
+        colorIndex++;
+    }
+    else {
+        colorIndex = 0;
+    }
+}
 
 jsonLooper(surveyJson);
 function jsonLooper(obj) {
@@ -14,16 +24,21 @@ function jsonLooper(obj) {
             labels.push(obj[k]);
         }
         if (k == "value") {
-            backgroundColor.push(obj[k])
+            values.push(obj[k])
         }
         if (typeof obj[k] === "object") {
             jsonLooper(obj[k])
         }
     }
 }
+$.each(labels, function () {
+    backgroundColor.push(chartColors[colorIndex]);
+    incrementColor();
+});
+
 var chartType;
 
-if(backgroundColor.length>5){
+if(labels.length>5){
     chartType="bar";
 }
 else{
@@ -54,7 +69,7 @@ function drawChart(chartTitle, index, key) {
     });
 
     var colorCounts = [];
-    $.each(backgroundColor, function () {
+    $.each(values, function () {
         colorCounts.push(counts[this]);
     });
 
@@ -94,7 +109,7 @@ function drawChart(chartTitle, index, key) {
 $("body").on("click", "#chart", function () {
     $("#container").html("");
     for (var i = 0; i < titles.length; i++) {
-        drawChart(titles[i], i, "nebo");
+        drawChart(titles[i], i, "boje");
     }
 });
 
