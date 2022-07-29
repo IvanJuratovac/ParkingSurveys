@@ -9,10 +9,10 @@ const surveyJson = {
     "logoPosition": "right",
     "pages": [
         {
-        "name": "page1",
+            "name": "page1",
             "elements": [
                 {
-            "type": "checkbox",
+                    "type": "checkbox",
                     "name": "polozeno",
                     "title": "Koje predmete ste položili?",
                     "choices": [
@@ -22,8 +22,8 @@ const surveyJson = {
                         "Java",
                         "Mikroračunala"
                     ]
-            },
-            {
+                },
+                {
                     "type": "dropdown",
                     "name": "najdrazi",
                     "title": "Odaberite najdraži predmet",
@@ -34,11 +34,27 @@ const surveyJson = {
                         "Java",
                         "Mikroračunala"
                     ]
-            },
-            {
+                },
+                {
                     "type": "rating",
                     "name": "zadovoljni",
                     "title": "Koliko ste zadovoljni svojim uspjehom?"
+                },
+                {
+                    "type": "radiogroup",
+                    "name": "nebo",
+                    "title": "Je li nebo plave boje",
+                    "isRequired": true,
+                    "choices": [
+                        {
+                            "value": "red",
+                            "text": "da"
+                        },
+                        {
+                            "value": "blue",
+                            "text": "ne"
+                        }
+                    ]
                 }
             ]
         }

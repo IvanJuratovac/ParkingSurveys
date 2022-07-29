@@ -11,20 +11,17 @@ const pool = new Pool({
 var t=[];
 var type="";
 const getSurvey = (req, res) => {
-    pool.query("select json->'pages'->0->'elements'->0->>'type' as name from surveys", (error, results) => {
+    const {title}=req.body;
+    pool.query('select surveyTypes as types from surveyTypes(\''+title+'\')', (error, results) => {
         if (error) {
             res.status(502);
             throw error;
         }
-        t=results.rows
-        //console.log(t)
-        
-               type= t[0].name;
-               //console.log(type)
-        
+            t=results.rows
+             console.log(t)
+            type= t[0].types[0];
+            console.log(type)
         res.status(201).json(results.rows);
-       
-
     })
 }
 
