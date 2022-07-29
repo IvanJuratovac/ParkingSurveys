@@ -37,7 +37,7 @@ const surveyJson = {
                 },
                 {
                     "type": "rating",
-                    "name": "question1",
+                    "name": "zadovoljni",
                     "title": "Koliko ste zadovoljni svojim uspjehom?"
                 }
             ]
