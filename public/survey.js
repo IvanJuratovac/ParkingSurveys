@@ -12,20 +12,33 @@ const surveyJson = {
             "name": "page1",
             "elements": [
                 {
-                    "type": "radiogroup",
-                    "name": "nebo",
-                    "title": "Je li nebo plave boje",
-                    "isRequired": true,
+                    "type": "checkbox",
+                    "name": "polozeno",
+                    "title": "Koje predmete ste položili?",
                     "choices": [
-                        {
-                            "value": "red",
-                            "text": "da"
-                        },
-                        {
-                            "value": "blue",
-                            "text": "ne"
-                        }
+                        "Baze podataka",
+                        "Web programiranje",
+                        "C#",
+                        "Java",
+                        "Mikroračunala"
                     ]
+                },
+                {
+                    "type": "dropdown",
+                    "name": "najdrazi",
+                    "title": "Odaberite najdraži predmet",
+                    "choices": [
+                        "Baze podataka",
+                        "Web programiranje",
+                        "C#",
+                        "Java",
+                        "Mikroračunala"
+                    ]
+                },
+                {
+                    "type": "rating",
+                    "name": "question1",
+                    "title": "Koliko ste zadovoljni svojim uspjehom?"
                 }
             ]
         }
@@ -55,9 +68,6 @@ function sendResults(sender) {
         async: false
     });
 }
-
-
-
 
 survey.onComplete.add(sendResults);
 
