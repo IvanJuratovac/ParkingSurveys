@@ -10,7 +10,7 @@ const pool = new Pool({
 
 var t=[];
 var type="";
-const getSurvey = (req, res) => {
+const getSurveyTypes = (req, res) => {
     const {title}=req.body;
     pool.query('select surveyTypes as types from surveyTypes(\''+title+'\')', (error, results) => {
         if (error) {
@@ -23,6 +23,20 @@ const getSurvey = (req, res) => {
             console.log(type)
         res.status(201).json(results.rows);
     })
+}
+
+
+const getSurveys=(req,req)=>{
+    const {title} =req.body;
+
+    pool.query('select  json as title from surveys where json->>\'title\'=\''+title+'\'') ,(error,results)=>{
+        if(error){
+            res.status(505);
+            throw error
+        }
+        res.status(200).json(results.rows);
+
+    }
 }
 
 const insertResults = (req, res) => {
@@ -69,5 +83,6 @@ const getResults = (req, res) => {
 module.exports = {
     getResults,
     insertResults,  
-    getSurvey
+    getSurveyTypes,
+    getSurveys
 }
