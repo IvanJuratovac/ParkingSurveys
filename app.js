@@ -16,3 +16,5 @@ app.post('/results', db.getResults);
 app.post('/survey',db.getSurvey)
 
 app.post('/send', db.insertResults);
+
+
