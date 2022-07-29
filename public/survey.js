@@ -45,7 +45,7 @@ function sendResults(sender) {
         },
         success: function (data) {
             console.log("data sent");
-            //console.log(data);
+            console.log(data);
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);

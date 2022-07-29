@@ -20,7 +20,7 @@ const getSurvey = (req, res) => {
         //console.log(t)
         
                type= t[1].name;
-               console.log(type)
+               //console.log(type)
         
         res.status(201).json(results.rows);
        
@@ -31,12 +31,13 @@ const getSurvey = (req, res) => {
 const insertResults = (req, res) => {
     const { results } = req.body;
    
-    
+    console.log(results)
     pool.query('insert into results(json) values($1) returning *', [results], (error, results) => {
         if (error) {
             res.status(503);
             throw error;
         }
+        console.log(results.rows)
         res.status(201).json(results.rows);
     })
 }
