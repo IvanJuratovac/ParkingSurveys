@@ -26,17 +26,17 @@ const getSurveyTypes = (req, res) => {
 }
 
 
-const getSurveys=(req,req)=>{
+const getSurveys=(req,res)=>{
     const {title} =req.body;
 
-    pool.query('select  json as title from surveys where json->>\'title\'=\''+title+'\'') ,(error,results)=>{
+    pool.query('select  json as title from surveys where json->>\'title\'=\''+title+'\'' ,(error,results)=>{
         if(error){
             res.status(505);
             throw error
         }
         res.status(200).json(results.rows);
 
-    }
+    })
 }
 
 const insertResults = (req, res) => {

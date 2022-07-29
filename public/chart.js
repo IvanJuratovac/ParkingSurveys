@@ -14,10 +14,10 @@ function incrementColor() {
     }
 }
 
-jsonLooper(surveyJson);
+//jsonLooper(surveyJson);
 function jsonLooper(obj) {
     for (let k in obj) {
-        if (k == "title" && obj[k] != surveyJson.title) {
+        if (k == "title" && obj[k] != obj.title) {
             titles.push(obj[k]);
         }
         if (k == "text") {

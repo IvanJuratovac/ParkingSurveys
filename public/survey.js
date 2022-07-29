@@ -4,65 +4,6 @@ Survey
     .StylesManager
     .applyTheme("modern");
 
-const surveyJson = {
-    "title": "Anketa",
-    "logoPosition": "right",
-    "pages": [
-        {
-            "name": "page1",
-            "elements": [
-                {
-                    "type": "checkbox",
-                    "name": "polozeno",
-                    "title": "Koje predmete ste položili?",
-                    "choices": [
-                        "Baze podataka",
-                        "Web programiranje",
-                        "C#",
-                        "Java",
-                        "Mikroračunala"
-                    ]
-                },
-                {
-                    "type": "dropdown",
-                    "name": "najdrazi",
-                    "title": "Odaberite najdraži predmet",
-                    "choices": [
-                        "Baze podataka",
-                        "Web programiranje",
-                        "C#",
-                        "Java",
-                        "Mikroračunala"
-                    ]
-                },
-                {
-                    "type": "rating",
-                    "name": "zadovoljni",
-                    "title": "Koliko ste zadovoljni svojim uspjehom?"
-                },
-                {
-                    "type": "radiogroup",
-                    "name": "nebo",
-                    "title": "Je li nebo plave boje",
-                    "isRequired": true,
-                    "choices": [
-                        {
-                            "value": "red",
-                            "text": "da"
-                        },
-                        {
-                            "value": "blue",
-                            "text": "ne"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}
-
-const survey = new Survey.Model(surveyJson);
-
 function sendResults(sender) {
     let results = JSON.stringify(sender.data);
     console.log(results);
@@ -85,12 +26,45 @@ function sendResults(sender) {
     });
 }
 
+function generateSurvey(title) {
+    var surveyJson;
+    $.ajax({
+        type: 'POST',
+        url: '/surveys',
+        data: {
+            "title": title
+        },
+        success: function (data) {
+            console.log(data);
 
+            var survey = new Survey.Model(data);
+            survey.onComplete.add(sendResults);
 
+            $("#container").Survey({ model: survey });
 
-survey.onComplete.add(sendResults);
+            jsonLooper(surveyJson);
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
 
-$("body").on("click", "#survey", function () {
-    survey.clear();
+$("body").on("click", "#boje", function () {
+    generateSurvey("Boje");
+});
+$("body").on("click", "#motori", function () {
+    generateSurvey("Motori");
+    $("#container").Survey({ model: survey });
+});
+$("body").on("click", "#ubija", function () {
+    generateSurvey("Promaja");
+    $("#container").Survey({ model: survey });
+});
+$("body").on("click", "#ludnica", function () {
+    generateSurvey("Ludnica");
     $("#container").Survey({ model: survey });
 });

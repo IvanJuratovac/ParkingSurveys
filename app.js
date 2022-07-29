@@ -14,7 +14,7 @@ app.use('/', express.static('public'));
 
 app.post('/results', db.getResults);
 app.post('/surveyType',db.getSurveyTypes)
-app.post('./surveys',db.getSurveys)
+app.post('/surveys',db.getSurveys)
 
 app.post('/send', db.insertResults);
 
