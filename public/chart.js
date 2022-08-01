@@ -114,8 +114,8 @@ function drawChart(chartTitle, index, key) {
             }
         }
     };
-    $("#container").append('<canvas id="chartContainer'+index+'"></canvas><br>');
-    console.log(index);
+    $("#container").append('<div class="chart'+index+'"><canvas id="chartContainer'+index+'"></canvas></div><br><br>');
+    console.log(response);
     var myChart = new Chart(document.getElementById('chartContainer' + index), config);
 }
 $("body").on("click", "#chart", function () {
