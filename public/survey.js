@@ -1,4 +1,5 @@
 // const SURVEY_ID = 1;
+var surveyID;
 
 Survey
     .StylesManager
@@ -27,7 +28,14 @@ function sendResults(sender) {
 }
 
 function generateSurvey(title) {
-    var surveyJson;
+    $.ajax({
+        type: 'POST',
+        url: '/surveyType',
+        data: {
+            "title": title
+        },
+        async: false
+    });
     $.ajax({
         type: 'POST',
         url: '/surveys',
@@ -35,14 +43,12 @@ function generateSurvey(title) {
             "title": title
         },
         success: function (data) {
-            console.log(data);
-            console.log(JSON.stringify(data[0].title))
-
-            var survey = new Survey.Model(data[0].title);
+            var surveyJson = data[0].title;
+            var survey = new Survey.Model(surveyJson);
             survey.onComplete.add(sendResults);
 
             $("#container").Survey({ model: survey });
-
+            mainTitle = surveyJson.title;
             jsonLooper(surveyJson);
         },
         error: function (xhr, textStatus, error) {
@@ -55,17 +61,22 @@ function generateSurvey(title) {
 }
 
 $("body").on("click", "#boje", function () {
+    titles = [];
     generateSurvey("Boje");
+    surveyID = "boje";
 });
-$("body").on("click", "#motori", function () {
+$("body").on("click", "#motor", function () {
+    titles = [];
     generateSurvey("Motori");
-    $("#container").Survey({ model: survey });
+    surveyID = "motor";
 });
 $("body").on("click", "#ubija", function () {
+    titles = [];
     generateSurvey("Promaja");
-    $("#container").Survey({ model: survey });
+    surveyID = "ubija";
 });
-$("body").on("click", "#ludnica", function () {
+$("body").on("click", "#zivot", function () {
+    titles = [];
     generateSurvey("Ludnica");
-    $("#container").Survey({ model: survey });
+    surveyID = "zivot";
 });

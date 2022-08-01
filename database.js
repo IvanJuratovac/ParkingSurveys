@@ -74,7 +74,7 @@ const getResults = (req, res) => {
                 throw error;
             }
             res.status(201).json(results.rows);
-           
+            console.log("nije polje",results.rows)
         })
     }
     

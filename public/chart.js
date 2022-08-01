@@ -1,12 +1,15 @@
-const labels = [];
-const values = [];
-const backgroundColor = [];
-const titles = [];
+var labels = [];
+var values = [];
+var backgroundColor = [];
+var titles = [];
+var counts = {};
+var mainTitle;
+var chartType = "line";
 
 const chartColors = ["red", "blue", "green", "gold", "purple", "orange", "magenta", "cyan", "brown"];
 var colorIndex = 0;
 function incrementColor() {
-    if (colorIndex < chartColors.length) {
+    if (colorIndex < chartColors.length - 1) {
         colorIndex++;
     }
     else {
@@ -14,10 +17,9 @@ function incrementColor() {
     }
 }
 
-//jsonLooper(surveyJson);
 function jsonLooper(obj) {
     for (let k in obj) {
-        if (k == "title" && obj[k] != obj.title) {
+        if (k == "title" && obj[k] != mainTitle) {
             titles.push(obj[k]);
         }
         if (k == "text") {
@@ -31,19 +33,7 @@ function jsonLooper(obj) {
         }
     }
 }
-$.each(labels, function () {
-    backgroundColor.push(chartColors[colorIndex]);
-    incrementColor();
-});
 
-var chartType;
-
-if(labels.length>5){
-    chartType="bar";
-}
-else{
-    chartType="doughnut";
-}
 function drawChart(chartTitle, index, key) {
     var response;
     $.ajax({
@@ -63,17 +53,39 @@ function drawChart(chartTitle, index, key) {
         async: false
     });
 
-    var counts = [];
     $.each(response, function () {
         counts[this.name] = this.count;
     });
 
-    var colorCounts = [];
-    $.each(values, function () {
-        colorCounts.push(counts[this]);
+    if (labels.length == 0) {
+        $.each(counts, function (key, value) {
+            labels.push(key);
+        });
+    }
+    $.each(labels, function () {
+        backgroundColor.push(chartColors[colorIndex]);
+        incrementColor();
     });
+    if (labels.length > 5) {
+        chartType = "bar";
+    }
+    else {
+        chartType = "doughnut";
+    }
 
-    const data = {
+    var colorCounts = [];
+    if (values.length == 0) {
+        $.each(counts, function (key, value) {
+            colorCounts.push(value);
+        });
+    }
+    else {
+        $.each(values, function () {
+            colorCounts.push(counts[this]);
+        });
+    }
+
+    var data = {
         labels: labels,
         datasets: [{
             label: 'Broj odabira',
@@ -82,7 +94,7 @@ function drawChart(chartTitle, index, key) {
             data: colorCounts
         }]
     };
-    const config = {
+    var config = {
         type: chartType,
         data: data,
         options: {
@@ -102,14 +114,22 @@ function drawChart(chartTitle, index, key) {
             }
         }
     };
-
-    $("#container").append('<canvas id="chartContainer'+index+'"></canvas>');
-    const myChart = new Chart(document.getElementById('chartContainer' + index), config);
+    $("#container").append('<canvas id="chartContainer'+index+'"></canvas><br>');
+    console.log(index);
+    var myChart = new Chart(document.getElementById('chartContainer' + index), config);
 }
 $("body").on("click", "#chart", function () {
     $("#container").html("");
+    $('#chartContainer').remove();
     for (var i = 0; i < titles.length; i++) {
-        drawChart(titles[i], i, "boje");
+        drawChart(titles[i], i, surveyID);
     }
+    labels = [];
+    values = [];
+    backgroundColor = [];
+    titles = [];
+    counts = {};
+    mainTitle;
+    chartType = "line";
 });
 
