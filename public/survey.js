@@ -36,8 +36,9 @@ function generateSurvey(title) {
         },
         success: function (data) {
             console.log(data);
+            console.log(JSON.stringify(data[0].title))
 
-            var survey = new Survey.Model(data);
+            var survey = new Survey.Model(data[0].title);
             survey.onComplete.add(sendResults);
 
             $("#container").Survey({ model: survey });
