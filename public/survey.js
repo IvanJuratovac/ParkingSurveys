@@ -80,3 +80,8 @@ $("body").on("click", "#zivot", function () {
     generateSurvey("Ludnica");
     surveyID = "zivot";
 });
+$("body").on("click", "#predmeti", function () {
+    titles = [];
+    generateSurvey("Predmeti");
+    surveyID = ["predmet","bad"];
+});
