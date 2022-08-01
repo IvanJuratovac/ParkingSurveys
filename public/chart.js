@@ -122,14 +122,16 @@ $("body").on("click", "#chart", function () {
     $("#container").html("");
     $('#chartContainer').remove();
     for (var i = 0; i < titles.length; i++) {
-        drawChart(titles[i], i, surveyID);
+        drawChart(titles[i], i, surveyID[i]);
+        console.log(surveyID[i]);
+        backgroundColor = [];
+        counts = {};
+        labels = [];
+        values = [];
     }
-    labels = [];
-    values = [];
-    backgroundColor = [];
     titles = [];
-    counts = {};
-    mainTitle;
+    
+    mainTitle = "";
     chartType = "line";
 });
 

@@ -30,6 +30,23 @@ function sendResults(sender) {
 function generateSurvey(title) {
     $.ajax({
         type: 'POST',
+        url: '/surveyNames',
+        data: {
+            "title": title
+        },
+        success: function (data) {
+            surveyID = data[0].names;
+            console.log(surveyID)
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+    $.ajax({
+        type: 'POST',
         url: '/surveyType',
         data: {
             "title": title
@@ -49,6 +66,7 @@ function generateSurvey(title) {
 
             $("#container").Survey({ model: survey });
             mainTitle = surveyJson.title;
+            console.log(surveyJson);
             jsonLooper(surveyJson);
         },
         error: function (xhr, textStatus, error) {
@@ -63,25 +81,24 @@ function generateSurvey(title) {
 $("body").on("click", "#boje", function () {
     titles = [];
     generateSurvey("Boje");
-    surveyID = "boje";
 });
 $("body").on("click", "#motor", function () {
     titles = [];
     generateSurvey("Motori");
-    surveyID = "motor";
 });
 $("body").on("click", "#ubija", function () {
     titles = [];
     generateSurvey("Promaja");
-    surveyID = "ubija";
 });
 $("body").on("click", "#zivot", function () {
     titles = [];
     generateSurvey("Ludnica");
-    surveyID = "zivot";
 });
 $("body").on("click", "#predmeti", function () {
     titles = [];
     generateSurvey("Predmeti");
-    surveyID = ["predmet","bad"];
+});
+$("body").on("click", "#skolovanje", function () {
+    titles = [];
+    generateSurvey("Školovanje");
 });
