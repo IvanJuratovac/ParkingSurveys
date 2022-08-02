@@ -109,7 +109,8 @@ $("body").on("click", "#saveJSON", function () {
             "survey": $('#novaAnketa').val()
         },
         success: function (data) {
-            $("#container").html("<br>Anketa spremljena!");
+            $("#container").html("<br>Anketa spremljena!<br>Stranica se ponovo učitava...");
+            sleep(2000);
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -119,3 +120,8 @@ $("body").on("click", "#saveJSON", function () {
         async: false
     });
 });
+
+async function sleep(ms) {
+    await new Promise(resolve => setTimeout(resolve, ms));
+    location.reload();
+}
