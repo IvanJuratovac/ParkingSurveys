@@ -82,7 +82,7 @@ const getQuestionNames = (req, res) => {
 
 const getSurveyTitles = (req, res) => {
     
-    pool.query('select json->>\'title\' as title from surveys', (error, results) => {
+    pool.query('select json->>\'title\' as title from surveys where json->>\'title\' is not null', (error, results) => {
         if (error) {
             res.status(508);
             throw error;
