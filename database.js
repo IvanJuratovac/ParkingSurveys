@@ -8,29 +8,29 @@ const pool = new Pool({
     port: 5432
 })
 
-var t=[];
-var type="";
+var t = [];
+var type = "";
 const getSurveyTypes = (req, res) => {
-    const {title}=req.body;
-    pool.query('select surveyTypes as types from surveyTypes(\''+title+'\')', (error, results) => {
+    const { title } = req.body;
+    pool.query('select surveyTypes as types from surveyTypes(\'' + title + '\')', (error, results) => {
         if (error) {
             res.status(502);
             throw error;
         }
-            t=results.rows
-             console.log(t)
-            type= t[0].types[0];
-            console.log(type)
+        t = results.rows
+        console.log(t)
+        type = t[0].types;
+        console.log(type)
         res.status(201).json(results.rows);
     })
 }
 
 
-const getSurveys=(req,res)=>{
-    const {title} =req.body;
+const getSurveys = (req, res) => {
+    const { title } = req.body;
 
-    pool.query('select  json as title from surveys where json->>\'title\'=\''+title+'\'' ,(error,results)=>{
-        if(error){
+    pool.query('select  json as title from surveys where json->>\'title\'=\'' + title + '\'', (error, results) => {
+        if (error) {
             res.status(505);
             throw error
         }
@@ -41,7 +41,7 @@ const getSurveys=(req,res)=>{
 
 const insertResults = (req, res) => {
     const { results } = req.body;
-   
+
     console.log(results)
     pool.query('insert into results(json) values($1) returning *', [results], (error, results) => {
         if (error) {
@@ -53,49 +53,59 @@ const insertResults = (req, res) => {
     })
 }
 
-const getQuestionNames =(req,res)=>{
-    const{title} = req.body;
-    pool.query('select surveyNames as names from surveyNames(\''+title+'\')', (error, results) => {
+const getQuestionNames = (req, res) => {
+    const { title } = req.body;
+    pool.query('select surveyNames as names from surveyNames(\'' + title + '\')', (error, results) => {
         if (error) {
             res.status(502);
             throw error;
         }
-           
+
         res.status(201).json(results.rows);
     })
 
 }
-
+var index = 0;
 const getResults = (req, res) => {
     const { key } = req.body;
-    
-    if(type=="checkbox"){
-        
-        pool.query('select count(1), json_array_elements_text(json#>\'{'+key+'}\') as name from results group by json_array_elements_text(json#>\'{'+key+'}\')', (error, results) => {
+
+    if (type[index] == "checkbox") {
+        console.log("if")
+
+        pool.query('select count(1), json_array_elements_text(json#>\'{' + key + '}\') as name from results group by json_array_elements_text(json#>\'{' + key + '}\')', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;
             }
             res.status(201).json(results.rows);
-            console.log("je polje",results.rows)
+            console.log("je polje", results.rows)
+
         })
     }
     else {
-        pool.query('select count(1),json->>\''+key+'\' as name from results where json->>\''+key+'\'is not null group by json->>\''+key+'\'', (error, results) => {
+
+        console.log("else")
+        pool.query('select count(1),json->>\'' + key + '\' as name from results where json->>\'' + key + '\'is not null group by json->>\'' + key + '\'', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;
             }
             res.status(201).json(results.rows);
-            console.log("nije polje",results.rows)
+            //console.log("nije polje",results.rows)
+
         })
     }
-    
+    if (type.at(-1) == type[index]) {
+        index = 0;
+    }
+    else {
+        index++;
+    }
 }
 
 module.exports = {
     getResults,
-    insertResults,  
+    insertResults,
     getSurveyTypes,
     getSurveys,
     getQuestionNames
