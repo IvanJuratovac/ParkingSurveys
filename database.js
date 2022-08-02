@@ -53,6 +53,20 @@ const insertResults = (req, res) => {
     })
 }
 
+const insertSurvey = (req, res) => {
+    const { survey } = req.body;
+
+    console.log(results)
+    pool.query('insert into surveys(json) values($1) returning *', [survey], (error, results) => {
+        if (error) {
+            res.status(503);
+            throw error;
+        }
+        console.log(results.rows)
+        res.status(201).json(results.rows);
+    })
+}
+
 const getQuestionNames = (req, res) => {
     const { title } = req.body;
     pool.query('select surveyNames as names from surveyNames(\'' + title + '\')', (error, results) => {
@@ -108,5 +122,6 @@ module.exports = {
     insertResults,
     getSurveyTypes,
     getSurveys,
-    getQuestionNames
+    getQuestionNames,
+    insertSurvey
 }
