@@ -6,7 +6,7 @@ var counts = {};
 var mainTitle;
 var chartType = "line";
 
-const chartColors = ["red", "blue", "green", "gold", "purple", "orange", "magenta", "cyan", "brown"];
+const chartColors = ["red", "blue", "green", "gold", "purple", "orange", "magenta", "brown", "cyan"];
 var colorIndex = 0;
 function incrementColor() {
     if (colorIndex < chartColors.length - 1) {
