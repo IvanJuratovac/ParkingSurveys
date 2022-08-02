@@ -55,8 +55,6 @@ const insertResults = (req, res) => {
 
 const insertSurvey = (req, res) => {
     const { survey } = req.body;
-
-    console.log(results)
     pool.query('insert into surveys(json) values($1) returning *', [survey], (error, results) => {
         if (error) {
             res.status(503);
