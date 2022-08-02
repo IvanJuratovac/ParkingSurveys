@@ -102,3 +102,8 @@ $("body").on("click", "#skolovanje", function () {
     titles = [];
     generateSurvey("Školovanje");
 });
+$("body").on("click", "#nova", function () {
+    var output = '<br><label for="novaAnketa">Zalijepite JSON tekst za anketu:</label>';
+    output += '<br><textarea id="novaAnketa" name="novaAnketa" rows="4" cols="50"></textarea>';
+    $("#container").html(output);
+});
