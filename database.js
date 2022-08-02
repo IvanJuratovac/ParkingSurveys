@@ -9,7 +9,7 @@ const pool = new Pool({
 })
 
 var t = [];
-var type = "";
+var type = [];
 const getSurveyTypes = (req, res) => {
     const { title } = req.body;
     pool.query('select surveyTypes as types from surveyTypes(\'' + title + '\')', (error, results) => {
@@ -48,7 +48,7 @@ const insertResults = (req, res) => {
             res.status(503);
             throw error;
         }
-        console.log(results.rows)
+       // console.log(results.rows)
         res.status(201).json(results.rows);
     })
 }
@@ -60,7 +60,7 @@ const insertSurvey = (req, res) => {
             res.status(503);
             throw error;
         }
-        console.log(results.rows)
+        //console.log(results.rows)
         res.status(201).json(results.rows);
     })
 }
@@ -96,7 +96,8 @@ const getResults = (req, res) => {
     const { key } = req.body;
 
     if (type[index] == "checkbox") {
-        console.log("if")
+        //console.log("if")
+       
 
         pool.query('select count(1), json_array_elements_text(json#>\'{' + key + '}\') as name from results group by json_array_elements_text(json#>\'{' + key + '}\')', (error, results) => {
             if (error) {
@@ -104,29 +105,32 @@ const getResults = (req, res) => {
                 throw error;
             }
             res.status(201).json(results.rows);
-            console.log("je polje", results.rows)
-
+            //console.log("if "+results.rows)
+                //index=0;
         })
     }
     else {
 
-        console.log("else")
+        //console.log("else")
+       
         pool.query('select count(1),json->>\'' + key + '\' as name from results where json->>\'' + key + '\'is not null group by json->>\'' + key + '\'', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;
             }
             res.status(201).json(results.rows);
-            //console.log("nije polje",results.rows)
+            //console.log("else "+results.rows)
 
         })
     }
-    if (type.at(-1) == type[index]) {
+   //console.log("type length "+type.length-1+" == "+index)
+    if (type.length-1==index) {
         index = 0;
     }
     else {
         index++;
     }
+    //console.log(index+" type: "+type[index]);
 }
 
 module.exports = {
