@@ -17,6 +17,7 @@ app.post('/surveyType',db.getSurveyTypes)
 app.post('/surveys',db.getSurveys)
 app.post('/surveyNames',db.getQuestionNames)
 app.post('/insertSurvey',db.insertSurvey)
+app.post('/titles',db.getSurveyTitles)
 
 app.post('/send', db.insertResults);
 

@@ -29,7 +29,7 @@ const getSurveyTypes = (req, res) => {
 const getSurveys = (req, res) => {
     const { title } = req.body;
 
-    pool.query('select  json as title from surveys where json->>\'title\'=\'' + title + '\'', (error, results) => {
+    pool.query('select json as title from surveys where json->>\'title\'=\'' + title + '\'', (error, results) => {
         if (error) {
             res.status(505);
             throw error
@@ -79,6 +79,20 @@ const getQuestionNames = (req, res) => {
     })
 
 }
+
+const getSurveyTitles = (req, res) => {
+    
+    pool.query('select json->>\'title\' from surveys', (error, results) => {
+        if (error) {
+            res.status(508);
+            throw error;
+        }
+
+        res.status(201).json(results.rows);
+    })
+
+}
+
 var index = 0;
 const getResults = (req, res) => {
     const { key } = req.body;
@@ -123,5 +137,6 @@ module.exports = {
     getSurveyTypes,
     getSurveys,
     getQuestionNames,
-    insertSurvey
+    insertSurvey,
+    getSurveyTitles
 }
