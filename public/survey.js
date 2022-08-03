@@ -4,7 +4,7 @@ $.ajax({
     success: function (data) {
         $("#buttonContainer").html("");
         $.each(data, function (key, value) {
-            $("#buttonContainer").append('<button class="button-34" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
+            $("#buttonContainer").append('<button class="button-34 anketa" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
         });
     },
     error: function (xhr, textStatus, error) {
@@ -86,6 +86,15 @@ function generateSurvey(id) {
         async: false
     });
 }
+
+$("#chart").prop("disabled", true);
+
+$("body").on("click", ".anketa", function () {
+    $("#chart").prop("disabled", false);
+});
+$("body").on("click", "#chart", function () {
+    $("#chart").prop("disabled", true);
+});
 
 $("body").on("click", "#nova", function () {
     var output = '<div><br><label for="novaAnketa">Zalijepite JSON tekst za anketu:</label>';
