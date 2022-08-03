@@ -118,7 +118,7 @@ $("body").on("click", ".anketa", function () {
     $("#tip").html("");
     deleteBtn = $(this).attr("id");
     $("#crud").html('<button class="button-34" id="delete' + deleteBtn + '" role="button" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px;" onclick="deleteSurvey()">Delete</button>');
-
+    $("#crud").append('<br><br><button class="button-34" role="button" id="chart" style="background-color: #e26804ad; box-shadow: #e26804ad 0 10px 20px -10px;">Chart</button>');
 });
 
 $("body").on("click", ".novaAnketa", function () {

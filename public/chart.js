@@ -79,7 +79,7 @@ function drawChart(chartTitle, index, key) {
             colorCounts.push(counts[this]);
         });
     }
-
+    Chart.register(ChartDataLabels);
     var data = {
         labels: labels,
         datasets: [{
@@ -89,6 +89,30 @@ function drawChart(chartTitle, index, key) {
             data: colorCounts
         }]
     };
+    var datalabels;
+    var legend;
+    if (chartType == "bar") {
+        legend = {
+            display: false
+        }
+        datalabels = {
+            display: true,
+            anchor: 'end',
+            align: 'top',
+            formatter: Math.round,
+            font: {
+                weight: 'bold'
+            }
+        };
+    }
+    else {
+        legend = {
+            display: true
+        }
+        datalabels = {
+            display: false
+        };
+    }
     var config = {
         type: chartType,
         data: data,
@@ -99,17 +123,19 @@ function drawChart(chartTitle, index, key) {
                 title: {
                     display: true,
                     text: chartTitle,
+                    padding: {
+                        bottom: 30
+                    },
                     font: {
                         size: 48
                     }
                 },
-                legend: {
-                    display: true
-                }
+                legend: legend,
+                datalabels: datalabels
             }
         }
     };
-    $("#container").append('<div class="chart'+index+'"><canvas id="chartContainer'+index+'"></canvas></div><br><br>');
+    $("#container").append('<div class="chart' + index + '"><canvas id="chartContainer' + index + '"></canvas></div><br><br>');
     var myChart = new Chart(document.getElementById('chartContainer' + index), config);
 }
 
@@ -127,7 +153,7 @@ function clickToDraw() {
     titles = [];
 }
 
-$("body").on("click","#charts",function(){
+$("body").on("click", "#charts", function () {
     if (chartType != $("#charts").val()) {
         chartType = $("#charts").val();
         jsonLooper(surveyJson);
