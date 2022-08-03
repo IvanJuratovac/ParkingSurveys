@@ -4,7 +4,7 @@ $.ajax({
     success: function (data) {
         $("#buttonContainer").html("");
         $.each(data, function (key, value) {
-            $("#buttonContainer").append('<button class="button-34 anketa" id="'+value.id+'" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
+            $("#buttonContainer").append('<button class="button-34 anketa" id="' + value.id + '" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
         });
     },
     error: function (xhr, textStatus, error) {
@@ -30,6 +30,28 @@ function sendResults(sender) {
         url: '/send',
         data: {
             "results": results
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+
+function deleteSurvey() {
+    $.ajax({
+        type: 'POST',
+        url: '/deleteSurvey',
+        data: {
+            "id": deleteBtn
+        },
+        success: function (data) {
+            sleep(2000);
+            console.log(data)
+            console.log("deleted")
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -87,23 +109,28 @@ function generateSurvey(id) {
         async: false
     });
 }
-deleteBtn=$("#uttonContainer").attr("id");
-console.log(deleteBtn)
+
+
 $("#chart").prop("disabled", true);
 
 $("body").on("click", ".anketa", function () {
     $("#chart").prop("disabled", false);
     $("#tip").html("");
-    
+    deleteBtn = $(this).attr("id");
+    $("#crud").html('<button class="button-34" id="delete' + deleteBtn + '" role="button" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px;" onclick="deleteSurvey()">Delete</button>');
+
 });
 
 $("body").on("click", ".novaAnketa", function () {
     $("#chart").prop("disabled", true);
     $("#tip").html("");
+    $("#delete" + deleteBtn).prop("disabled", true);
+
 });
 
 $("body").on("click", "#chart", function () {
     $("#chart").prop("disabled", true);
+    $("#delete" + deleteBtn).prop("disabled", true);
     var output = '<label for="charts">Odaberite tip grafikona</label>';
     output += '    <select name="charts" id="charts">';
     output += '        <option class="chartItem" value="bar">Bar</option>';
