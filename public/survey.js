@@ -4,7 +4,7 @@ $.ajax({
     success: function (data) {
         $("#buttonContainer").html("");
         $.each(data, function (key, value) {
-            $("#buttonContainer").append('<button class="button-34" role="button" onclick="generateSurvey(\'' + value.title + '\')">' + value.title + '</button>');
+            $("#buttonContainer").append('<button class="button-34" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
         });
     },
     error: function (xhr, textStatus, error) {
@@ -38,13 +38,13 @@ function sendResults(sender) {
     });
 }
 
-function generateSurvey(title) {
+function generateSurvey(id) {
     titles = [];
     $.ajax({
         type: 'POST',
         url: '/surveyNames',
         data: {
-            "title": title
+            "id": id
         },
         success: function (data) {
             surveyID = data[0].names;
@@ -60,7 +60,7 @@ function generateSurvey(title) {
         type: 'POST',
         url: '/surveyType',
         data: {
-            "title": title
+            "id": id
         },
         async: false
     });
@@ -68,7 +68,7 @@ function generateSurvey(title) {
         type: 'POST',
         url: '/surveys',
         data: {
-            "title": title
+            "id": id
         },
         success: function (data) {
             var surveyJson = data[0].title;

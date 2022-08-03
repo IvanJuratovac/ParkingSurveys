@@ -10,8 +10,8 @@ const pool = new Pool({
 
 var type = [];
 const getSurveyTypes = (req, res) => {
-    const { title } = req.body;
-    pool.query('select surveyTypes as types from surveyTypes(\'' + title + '\')', (error, results) => {
+    const { id } = req.body;
+    pool.query('select surveyTypes as types from surveyTypes(' + id + ')', (error, results) => {
         if (error) {
             res.status(502);
             throw error;
@@ -23,8 +23,8 @@ const getSurveyTypes = (req, res) => {
 
 
 const getSurveys = (req, res) => {
-    const { title } = req.body;
-    pool.query('select json as title from surveys where json->>\'title\'=\'' + title + '\'', (error, results) => {
+    const { id } = req.body;
+    pool.query('select json as title from surveys where id=' + id, (error, results) => {
         if (error) {
             res.status(505);
             throw error
@@ -56,8 +56,8 @@ const insertSurvey = (req, res) => {
 }
 
 const getQuestionNames = (req, res) => {
-    const { title } = req.body;
-    pool.query('select surveyNames as names from surveyNames(\'' + title + '\')', (error, results) => {
+    const { id } = req.body;
+    pool.query('select surveyNames as names from surveyNames(' + id + ')', (error, results) => {
         if (error) {
             res.status(502);
             throw error;
@@ -67,7 +67,7 @@ const getQuestionNames = (req, res) => {
 }
 
 const getSurveyTitles = (req, res) => {
-    pool.query('select json->>\'title\' as title from surveys where json->>\'title\' is not null', (error, results) => {
+    pool.query('select id, json->>\'title\' as title from surveys where json->>\'title\' is not null', (error, results) => {
         if (error) {
             res.status(508);
             throw error;
