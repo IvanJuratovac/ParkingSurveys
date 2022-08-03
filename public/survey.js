@@ -23,16 +23,11 @@ Survey
 
 function sendResults(sender) {
     let results = JSON.stringify(sender.data);
-    console.log(results);
     $.ajax({
         type: 'POST',
         url: '/send',
         data: {
             "results": results
-        },
-        success: function (data) {
-            console.log("data sent");
-            console.log(data);
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -53,7 +48,6 @@ function generateSurvey(title) {
         },
         success: function (data) {
             surveyID = data[0].names;
-            console.log(surveyID)
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -80,10 +74,8 @@ function generateSurvey(title) {
             var surveyJson = data[0].title;
             var survey = new Survey.Model(surveyJson);
             survey.onComplete.add(sendResults);
-
             $("#container").Survey({ model: survey });
             mainTitle = surveyJson.title;
-            console.log(surveyJson);
             jsonLooper(surveyJson);
         },
         error: function (xhr, textStatus, error) {

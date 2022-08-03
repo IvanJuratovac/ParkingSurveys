@@ -4,7 +4,7 @@ var backgroundColor = [];
 var titles = [];
 var counts = {};
 var mainTitle;
-var chartType = "line";
+var chartType = "bar";
 
 const chartColors = ["red", "blue", "green", "gold", "purple", "orange", "magenta", "brown", "cyan"];
 var colorIndex = 0;
@@ -115,7 +115,6 @@ function drawChart(chartTitle, index, key) {
         }
     };
     $("#container").append('<div class="chart'+index+'"><canvas id="chartContainer'+index+'"></canvas></div><br><br>');
-    console.log(response);
     var myChart = new Chart(document.getElementById('chartContainer' + index), config);
 }
 $("body").on("click", "#chart", function () {
@@ -123,15 +122,13 @@ $("body").on("click", "#chart", function () {
     $('#chartContainer').remove();
     for (var i = 0; i < titles.length; i++) {
         drawChart(titles[i], i, surveyID[i]);
-        console.log(surveyID[i]);
         backgroundColor = [];
         counts = {};
         labels = [];
         values = [];
     }
     titles = [];
-    
     mainTitle = "";
-    chartType = "line";
+    chartType = "bar";
 });
 

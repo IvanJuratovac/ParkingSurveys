@@ -13,12 +13,13 @@ app.listen(3000, () => {
 app.use('/', express.static('public'));
 
 app.post('/results', db.getResults);
-app.post('/surveyType',db.getSurveyTypes)
-app.post('/surveys',db.getSurveys)
-app.post('/surveyNames',db.getQuestionNames)
-app.post('/insertSurvey',db.insertSurvey)
-app.get('/titles',db.getSurveyTitles)
-
 app.post('/send', db.insertResults);
+
+app.post('/surveyType',db.getSurveyTypes);
+app.post('/surveys',db.getSurveys);
+app.post('/surveyNames',db.getQuestionNames);
+app.post('/insertSurvey',db.insertSurvey);
+
+app.get('/titles',db.getSurveyTitles);
 
 
