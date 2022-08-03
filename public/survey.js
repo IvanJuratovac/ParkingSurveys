@@ -4,7 +4,7 @@ $.ajax({
     success: function (data) {
         $("#buttonContainer").html("");
         $.each(data, function (key, value) {
-            $("#buttonContainer").append('<button class="button-34 anketa" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
+            $("#buttonContainer").append('<button class="button-34 anketa" id="'+value.id+'" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
         });
     },
     error: function (xhr, textStatus, error) {
@@ -17,6 +17,7 @@ $.ajax({
 
 var surveyID;
 var surveyJson;
+var deleteBtn;
 
 Survey
     .StylesManager
@@ -86,12 +87,14 @@ function generateSurvey(id) {
         async: false
     });
 }
-
+deleteBtn=$("#uttonContainer").attr("id");
+console.log(deleteBtn)
 $("#chart").prop("disabled", true);
 
 $("body").on("click", ".anketa", function () {
     $("#chart").prop("disabled", false);
     $("#tip").html("");
+    
 });
 
 $("body").on("click", ".novaAnketa", function () {
