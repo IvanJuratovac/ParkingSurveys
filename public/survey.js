@@ -16,6 +16,7 @@ $.ajax({
 });
 
 var surveyID;
+var surveyJson;
 
 Survey
     .StylesManager
@@ -71,12 +72,11 @@ function generateSurvey(id) {
             "id": id
         },
         success: function (data) {
-            var surveyJson = data[0].title;
+            surveyJson = data[0].title;
             var survey = new Survey.Model(surveyJson);
             survey.onComplete.add(sendResults);
             $("#container").Survey({ model: survey });
             mainTitle = surveyJson.title;
-            jsonLooper(surveyJson);
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -91,9 +91,24 @@ $("#chart").prop("disabled", true);
 
 $("body").on("click", ".anketa", function () {
     $("#chart").prop("disabled", false);
+    $("#tip").html("");
 });
+
+$("body").on("click", ".novaAnketa", function () {
+    $("#chart").prop("disabled", true);
+    $("#tip").html("");
+});
+
 $("body").on("click", "#chart", function () {
     $("#chart").prop("disabled", true);
+    var output = '<label for="charts">Odaberite tip grafikona</label>';
+    output += '    <select name="charts" id="charts">';
+    output += '        <option class="chartItem" value="bar">Bar</option>';
+    output += '        <option class="chartItem" value="doughnut">Doughnut</option>';
+    output += '        <option class="chartItem" value="pie">Pie</option>';
+    output += '        <option class="chartItem" value="line">Line</option>';
+    output += '    </select>';
+    $("#tip").html(output);
 });
 
 $("body").on("click", "#nova", function () {

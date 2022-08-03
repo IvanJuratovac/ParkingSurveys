@@ -17,6 +17,8 @@ function incrementColor() {
     }
 }
 
+
+
 function jsonLooper(obj) {
     for (let k in obj) {
         if (k == "title" && obj[k] != mainTitle) {
@@ -66,13 +68,6 @@ function drawChart(chartTitle, index, key) {
         backgroundColor.push(chartColors[colorIndex]);
         incrementColor();
     });
-    if (labels.length > 5) {
-        chartType = "bar";
-    }
-    else {
-        chartType = "doughnut";
-    }
-
     var colorCounts = [];
     if (values.length == 0) {
         $.each(counts, function (key, value) {
@@ -117,7 +112,8 @@ function drawChart(chartTitle, index, key) {
     $("#container").append('<div class="chart'+index+'"><canvas id="chartContainer'+index+'"></canvas></div><br><br>');
     var myChart = new Chart(document.getElementById('chartContainer' + index), config);
 }
-$("body").on("click", "#chart", function () {
+
+function clickToDraw() {
     $("#container").html("");
     $('#chartContainer').remove();
     for (var i = 0; i < titles.length; i++) {
@@ -127,8 +123,19 @@ $("body").on("click", "#chart", function () {
         labels = [];
         values = [];
     }
+    console.log(titles);
     titles = [];
-    mainTitle = "";
-    chartType = "bar";
+}
+
+$("body").on("click","#charts",function(){
+    if (chartType != $("#charts").val()) {
+        chartType = $("#charts").val();
+        jsonLooper(surveyJson);
+        clickToDraw();
+    }
+})
+$("body").on("click", "#chart", function () {
+    jsonLooper(surveyJson);
+    clickToDraw();
 });
 
