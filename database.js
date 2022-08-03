@@ -33,6 +33,17 @@ const getSurveys = (req, res) => {
     })
 }
 
+const deleteSurvey=(req,res)=>{
+    const { id } = req.body;
+    pool.query('delete from surveys where id=' + id, (error, results) => {
+        if (error) {
+            res.status(505);
+            throw error
+        }
+        res.status(200).json(results.rows);
+    })
+}
+
 const insertResults = (req, res) => {
     const { results } = req.body;
     pool.query('insert into results(json) values($1) returning *', [results], (error, results) => {
@@ -112,5 +123,6 @@ module.exports = {
     getSurveys,
     getQuestionNames,
     insertSurvey,
-    getSurveyTitles
+    getSurveyTitles,
+    deleteSurvey
 }
