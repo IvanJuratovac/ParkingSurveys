@@ -149,7 +149,6 @@ function clickToDraw() {
         labels = [];
         values = [];
     }
-    console.log(titles);
     titles = [];
 }
 

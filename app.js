@@ -20,6 +20,7 @@ app.post('/surveys',db.getSurveys);
 app.post('/surveyNames',db.getQuestionNames);
 app.post('/insertSurvey',db.insertSurvey);
 app.post('/deleteSurvey',db.deleteSurvey);
+app.post('/updateSurvey',db.updateSurvey)
 
 app.get('/titles',db.getSurveyTitles);
 

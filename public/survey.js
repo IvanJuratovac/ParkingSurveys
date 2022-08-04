@@ -62,6 +62,7 @@ function deleteSurvey() {
     });
 }
 
+
 function generateSurvey(id) {
     titles = [];
     $.ajax({
@@ -109,7 +110,33 @@ function generateSurvey(id) {
         async: false
     });
 }
+function updateSurvey() {
+    var output = '<br><label for="Anketa">Zalijepite JSON tekst za izmjenu ankete:</label>';
+    output += '<br><textarea id="updateAnketa" name="updateAnketa" rows="40" cols="75">' + JSON.stringify(surveyJson) + '</textarea>';
+    output += '<br><button id="updateJSON">Izmjeni</button>';
+    $("#container").html(output);
+    $("body").on("click", "#updateJSON", function () {
+        $.ajax({
+            type: 'POST',
+            url: '/updateSurvey',
+            data: {
+                "json": $('#updateAnketa').val(),
+                "id": deleteBtn
+            },
+            success: function (data) {
+                $("#container").html("<br>Anketa izmjenjena!<br>Stranica se ponovo učitava...");
+                sleep(2000);
 
+            },
+            error: function (xhr, textStatus, error) {
+                console.log(xhr.statusText);
+                console.log(textStatus);
+                console.log(error);
+            },
+            async: false
+        });
+    });
+}
 
 $("#chart").prop("disabled", true);
 
@@ -118,19 +145,23 @@ $("body").on("click", ".anketa", function () {
     $("#tip").html("");
     deleteBtn = $(this).attr("id");
     $("#crud").html('<button class="button-34" id="delete' + deleteBtn + '" role="button" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px;" onclick="deleteSurvey()">Delete</button>');
+    $("#crud").append('<button class="button-34" id="update' + deleteBtn + '" role="button" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px" onclick="updateSurvey()";">Update</button>');
     $("#crud").append('<br><br><button class="button-34" role="button" id="chart" style="background-color: #e26804ad; box-shadow: #e26804ad 0 10px 20px -10px;">Chart</button>');
+
 });
 
 $("body").on("click", ".novaAnketa", function () {
     $("#chart").prop("disabled", true);
     $("#tip").html("");
     $("#delete" + deleteBtn).prop("disabled", true);
+    $("#update" + deleteBtn).prop("disabled", true);
 
 });
 
 $("body").on("click", "#chart", function () {
     $("#chart").prop("disabled", true);
     $("#delete" + deleteBtn).prop("disabled", true);
+    $("#update" + deleteBtn).prop("disabled", true);
     var output = '<label for="charts">Odaberite tip grafikona</label>';
     output += '    <select name="charts" id="charts">';
     output += '        <option class="chartItem" value="bar">Bar</option>';
@@ -147,6 +178,7 @@ $("body").on("click", "#nova", function () {
     output += '<br><button id="saveJSON">Spremi</button>';
     $("#container").html(output);
 });
+
 $("body").on("click", "#saveJSON", function () {
     $.ajax({
         type: 'POST',
@@ -166,6 +198,7 @@ $("body").on("click", "#saveJSON", function () {
         async: false
     });
 });
+
 
 async function sleep(ms) {
     await new Promise(resolve => setTimeout(resolve, ms));
