@@ -49,9 +49,8 @@ function deleteSurvey() {
             "id": deleteBtn
         },
         success: function (data) {
+            $("#container").html("<br>Anketa izbrisana!<br>Stranica se ponovo učitava...");
             sleep(2000);
-            console.log(data)
-            console.log("deleted")
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
