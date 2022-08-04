@@ -101,6 +101,7 @@ function drawChart(chartTitle, index, key) {
             align: 'top',
             formatter: Math.round,
             font: {
+                size: 20,
                 weight: 'bold'
             }
         };

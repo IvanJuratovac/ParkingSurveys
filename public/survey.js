@@ -6,13 +6,15 @@ $.ajax({
         $.each(data, function (key, value) {
             $("#buttonContainer").append('<button class="button-34 anketa" id="' + value.id + '" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
         });
+        $('#loading').hide();
+        $('#container').show();
     },
     error: function (xhr, textStatus, error) {
         console.log(xhr.statusText);
         console.log(textStatus);
         console.log(error);
     },
-    async: false
+    async: true
 });
 
 var surveyID;
@@ -36,7 +38,7 @@ function sendResults(sender) {
             console.log(textStatus);
             console.log(error);
         },
-        async: false
+        async: true
     });
 }
 
@@ -57,7 +59,7 @@ function deleteSurvey() {
             console.log(textStatus);
             console.log(error);
         },
-        async: false
+        async: true
     });
 }
 
@@ -78,7 +80,7 @@ function generateSurvey(id) {
             console.log(textStatus);
             console.log(error);
         },
-        async: false
+        async: true
     });
     $.ajax({
         type: 'POST',
@@ -86,7 +88,7 @@ function generateSurvey(id) {
         data: {
             "id": id
         },
-        async: false
+        async: true
     });
     $.ajax({
         type: 'POST',
@@ -100,13 +102,15 @@ function generateSurvey(id) {
             survey.onComplete.add(sendResults);
             $("#container").Survey({ model: survey });
             mainTitle = surveyJson.title;
+            $('#loading').hide();
+            $('#container').show();
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
             console.log(textStatus);
             console.log(error);
         },
-        async: false
+        async: true
     });
 }
 function updateSurvey() {
@@ -125,14 +129,13 @@ function updateSurvey() {
             success: function (data) {
                 $("#container").html("<br>Anketa izmjenjena!<br>Stranica se ponovo učitava...");
                 sleep(2000);
-
             },
             error: function (xhr, textStatus, error) {
                 console.log(xhr.statusText);
                 console.log(textStatus);
                 console.log(error);
             },
-            async: false
+            async: true
         });
     });
 }
@@ -140,6 +143,8 @@ function updateSurvey() {
 $("#chart").prop("disabled", true);
 
 $("body").on("click", ".anketa", function () {
+    $('#loading').show();
+    $('#container').hide();
     $("#chart").prop("disabled", false);
     $("#tip").html("");
     deleteBtn = $(this).attr("id");
@@ -194,10 +199,9 @@ $("body").on("click", "#saveJSON", function () {
             console.log(textStatus);
             console.log(error);
         },
-        async: false
+        async: true
     });
 });
-
 
 async function sleep(ms) {
     await new Promise(resolve => setTimeout(resolve, ms));

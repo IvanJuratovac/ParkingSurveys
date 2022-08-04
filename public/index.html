@@ -50,10 +50,46 @@
     .sv-container-modern__title {
         padding-top: 2em !important;
     }
+
+    .center {
+        margin: auto;
+        width: 60%;
+        padding: 10px;
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 1.3s linear infinite;
+        animation: spin 1.3s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 
 <body>
-
     <button class="button-34 novaAnketa" role="button" id="nova"
         style="background-color: #0da200; box-shadow: #0da200 0 10px 20px -10px;">Nova anketa</button>
     <br>
@@ -62,13 +98,10 @@
         <button class="button-34" role="button">Nema anketa</button>
     </div>
     <br>
-    <div id="crud">
-        
-    </div>
+    <div id="crud"></div>
     <br>
-    <div id="tip">
-    </div>
-
+    <div id="tip"></div>
+    <div id="loading" class="loader center"></div>
     <div id="container"></div>
 
     <script type="text/javascript" src="survey.js"></script>
