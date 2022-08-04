@@ -17,8 +17,6 @@ function incrementColor() {
     }
 }
 
-
-
 function jsonLooper(obj) {
     for (let k in obj) {
         if (k == "title" && obj[k] != mainTitle) {
@@ -68,17 +66,43 @@ function drawChart(chartTitle, index, key) {
         backgroundColor.push(chartColors[colorIndex]);
         incrementColor();
     });
-    var colorCounts = [];
+
+    var dataCounts = [];
     if (values.length == 0) {
         $.each(counts, function (key, value) {
-            colorCounts.push(value);
+            dataCounts.push(value);
         });
     }
     else {
         $.each(values, function () {
-            colorCounts.push(counts[this]);
+            dataCounts.push(counts[this]);
         });
     }
+
+    if (chartType == "doughnut" || chartType == "pie") {
+        arrayOfObj = labels.map(function (d, i) {
+            return {
+                label: d,
+                data: dataCounts[i] || 0
+            };
+        });
+        sortedArrayOfObj = arrayOfObj.sort(function (a, b) {
+            if (Number(a.data) < Number(b.data)) {
+                return 1;
+            }
+            if (Number(a.data) > Number(b.data)) {
+                return -1;
+            }
+            return 0;
+        });
+        labels = [];
+        dataCounts = [];
+        sortedArrayOfObj.forEach(function (d) {
+            labels.push(d.label);
+            dataCounts.push(d.data);
+        });
+    }
+
     Chart.register(ChartDataLabels);
     var data = {
         labels: labels,
@@ -86,9 +110,10 @@ function drawChart(chartTitle, index, key) {
             label: 'Broj odabira',
             backgroundColor: backgroundColor,
             borderColor: backgroundColor,
-            data: colorCounts
+            data: dataCounts
         }]
     };
+
     var datalabels;
     var legend;
     if (chartType == "bar") {
@@ -114,6 +139,7 @@ function drawChart(chartTitle, index, key) {
             display: false
         };
     }
+
     var config = {
         type: chartType,
         data: data,
@@ -136,6 +162,7 @@ function drawChart(chartTitle, index, key) {
             }
         }
     };
+
     $("#container").append('<div class="chart' + index + '"><canvas id="chartContainer' + index + '"></canvas></div><br><br>');
     var myChart = new Chart(document.getElementById('chartContainer' + index), config);
 }
@@ -154,7 +181,7 @@ function clickToDraw() {
 }
 
 $("body").on("click", "#charts", function () {
-    if (chartType != $("#charts").val()) {
+    if (chartType != $("#charts").val() && $("#charts").val() != "") {
         chartType = $("#charts").val();
         jsonLooper(surveyJson);
         clickToDraw();
@@ -164,4 +191,3 @@ $("body").on("click", "#chart", function () {
     jsonLooper(surveyJson);
     clickToDraw();
 });
-

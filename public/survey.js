@@ -1,22 +1,3 @@
-$.ajax({
-    type: 'GET',
-    url: '/titles',
-    success: function (data) {
-        $("#buttonContainer").html("");
-        $.each(data, function (key, value) {
-            $("#buttonContainer").append('<button class="button-34 anketa" id="' + value.id + '" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
-        });
-        $('#loading').hide();
-        $('#container').show();
-    },
-    error: function (xhr, textStatus, error) {
-        console.log(xhr.statusText);
-        console.log(textStatus);
-        console.log(error);
-    },
-    async: true
-});
-
 var surveyID;
 var surveyJson;
 var deleteBtn;
@@ -42,7 +23,6 @@ function sendResults(sender) {
     });
 }
 
-
 function deleteSurvey() {
     $.ajax({
         type: 'POST',
@@ -62,7 +42,6 @@ function deleteSurvey() {
         async: true
     });
 }
-
 
 function generateSurvey(id) {
     titles = [];
@@ -113,6 +92,7 @@ function generateSurvey(id) {
         async: true
     });
 }
+
 function updateSurvey() {
     var output = '<br><label for="Anketa">Zalijepite JSON tekst za izmjenu ankete:</label>';
     output += '<br><textarea id="updateAnketa" name="updateAnketa" rows="40" cols="75">' + JSON.stringify(surveyJson) + '</textarea>';
@@ -139,6 +119,25 @@ function updateSurvey() {
         });
     });
 }
+
+$.ajax({
+    type: 'GET',
+    url: '/titles',
+    success: function (data) {
+        $("#buttonContainer").html("");
+        $.each(data, function (key, value) {
+            $("#buttonContainer").append('<button class="button-34 anketa" id="' + value.id + '" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
+        });
+        $('#loading').hide();
+        $('#container').show();
+    },
+    error: function (xhr, textStatus, error) {
+        console.log(xhr.statusText);
+        console.log(textStatus);
+        console.log(error);
+    },
+    async: true
+});
 
 $("#chart").prop("disabled", true);
 
@@ -168,10 +167,10 @@ $("body").on("click", "#chart", function () {
     $("#update" + deleteBtn).prop("disabled", true);
     var output = '<label for="charts">Odaberite tip grafikona</label>';
     output += '    <select name="charts" id="charts">';
-    output += '        <option class="chartItem" value="bar">Bar</option>';
-    output += '        <option class="chartItem" value="doughnut">Doughnut</option>';
-    output += '        <option class="chartItem" value="pie">Pie</option>';
-    output += '        <option class="chartItem" value="line">Line</option>';
+    output += '        <option value="">---Odaberite---</option>';
+    output += '        <option value="bar">Bar</option>';
+    output += '        <option value="doughnut">Doughnut</option>';
+    output += '        <option value="pie">Pie</option>';
     output += '    </select>';
     $("#tip").html(output);
 });
