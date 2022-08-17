@@ -3,7 +3,7 @@ console.log('connecting...');
 const pool = new Pool({
     user: 'fgaspar',
     host: 'postgres-dev',
-    database: 'nova',
+    database: 'temelji',
     password: 'Academica2022dev',
     port: 5432
 })
@@ -24,7 +24,7 @@ const getSurveyTypes = (req, res) => {
 
 const getSurveys = (req, res) => {
     const { id } = req.body;
-    pool.query('select json as title from surveys where id=' + id, (error, results) => {
+    pool.query('select details as title from controls where id=' + id, (error, results) => {
         if (error) {
             res.status(505);
             throw error
@@ -35,7 +35,7 @@ const getSurveys = (req, res) => {
 
 const deleteSurvey = (req, res) => {
     const { id } = req.body;
-    pool.query('delete from surveys where id=' + id, (error, results) => {
+    pool.query('delete from controls where id=' + id, (error, results) => {
         if (error) {
             res.status(505);
             throw error
@@ -46,7 +46,7 @@ const deleteSurvey = (req, res) => {
 
 const insertResults = (req, res) => {
     const { results } = req.body;
-    pool.query('insert into results(json) values($1) returning *', [results], (error, results) => {
+    pool.query('insert into transactions(details,id) values($1) returning *', [results], (error, results) => {
         if (error) {
             res.status(503);
             throw error;
