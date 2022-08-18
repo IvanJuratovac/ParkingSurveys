@@ -153,14 +153,6 @@ $("body").on("click", ".anketa", function () {
 
 });
 
-$("body").on("click", ".novaAnketa", function () {
-    $("#chart").prop("disabled", true);
-    $("#tip").html("");
-    $("#delete" + deleteBtn).prop("disabled", true);
-    $("#update" + deleteBtn).prop("disabled", true);
-
-});
-
 $("body").on("click", "#chart", function () {
     $("#chart").prop("disabled", true);
     $("#delete" + deleteBtn).prop("disabled", true);
@@ -173,33 +165,6 @@ $("body").on("click", "#chart", function () {
     output += '        <option value="pie">Pie</option>';
     output += '    </select>';
     $("#tip").html(output);
-});
-
-$("body").on("click", "#nova", function () {
-    var output = '<div><br><label for="novaAnketa">Zalijepite JSON tekst za anketu:</label>';
-    output += '<br><textarea id="novaAnketa" name="novaAnketa" rows="40" cols="75"></textarea>';
-    output += '<br><button id="saveJSON">Spremi</button>';
-    $("#container").html(output);
-});
-
-$("body").on("click", "#saveJSON", function () {
-    $.ajax({
-        type: 'POST',
-        url: '/insertSurvey',
-        data: {
-            "survey": $('#novaAnketa').val()
-        },
-        success: function (data) {
-            $("#container").html("<br>Anketa spremljena!<br>Stranica se ponovo učitava...");
-            sleep(2000);
-        },
-        error: function (xhr, textStatus, error) {
-            console.log(xhr.statusText);
-            console.log(textStatus);
-            console.log(error);
-        },
-        async: true
-    });
 });
 
 async function sleep(ms) {
