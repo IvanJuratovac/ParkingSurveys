@@ -45,8 +45,11 @@ const deleteSurvey = (req, res) => {
 }
 
 const insertResults = (req, res) => {
-    const { results } = req.body;
-    pool.query('insert into transactions(details,id) values($1) returning *', [results], (error, results) => {
+    const { details } = req.body;
+    const { idcontrols } = req.body;
+    const {idupdated}=req.body;
+    const {idcreated} = req.body;
+    pool.query('insert into transactions(details,idcontrols,idupdated,idcreated) values($1,$2,$3,$4) returning *', [details,idcontrols,idupdated,idcreated], (error, results) => {
         if (error) {
             res.status(503);
             throw error;
@@ -55,16 +58,6 @@ const insertResults = (req, res) => {
     })
 }
 
-const insertSurvey = (req, res) => {
-    const { survey } = req.body;
-    pool.query('insert into surveys(json) values($1) returning *', [survey], (error, results) => {
-        if (error) {
-            res.status(503);
-            throw error;
-        }
-        res.status(201).json(results.rows);
-    })
-}
 
 const getQuestionNames = (req, res) => {
     const { id } = req.body;
@@ -79,8 +72,8 @@ const getQuestionNames = (req, res) => {
 
 const updateSurvey = (req, res) => {
     const { id } = req.body;
-    const { json } = req.body
-    pool.query('update surveys set json=$1 where id=$2', [json, id], (error, results) => {
+    const { details } = req.body
+    pool.query('update controls set details=$1 where id=$2', [details, id], (error, results) => {
         if (error) {
             res.status(502);
             throw error;
@@ -90,7 +83,7 @@ const updateSurvey = (req, res) => {
 }
 
 const getSurveyTitles = (req, res) => {
-    pool.query('select id, json->>\'title\' as title from surveys where json->>\'title\' is not null', (error, results) => {
+    pool.query('select id, details->>\'title\' as title from controls where details->>\'title\' is not null', (error, results) => {
         if (error) {
             res.status(508);
             throw error;
@@ -103,7 +96,7 @@ var index = 0;
 const getResults = (req, res) => {
     const { key } = req.body;
     if (type[index] == "checkbox") {
-        pool.query('select count(1), json_array_elements_text(json#>\'{' + key + '}\') as name from results group by json_array_elements_text(json#>\'{' + key + '}\')', (error, results) => {
+        pool.query('select count(1), json_array_elements_text(details#>\'{' + key + '}\') as name from controls group by json_array_elements_text(details#>\'{' + key + '}\')', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;
@@ -112,7 +105,7 @@ const getResults = (req, res) => {
         })
     }
     else {
-        pool.query('select count(1),json->>\'' + key + '\' as name from results where json->>\'' + key + '\'is not null group by json->>\'' + key + '\'', (error, results) => {
+        pool.query('select count(1),details->>\'' + key + '\' as name from controls where details->>\'' + key + '\'is not null group by details->>\'' + key + '\'', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;
@@ -134,7 +127,6 @@ module.exports = {
     getSurveyTypes,
     getSurveys,
     getQuestionNames,
-    insertSurvey,
     getSurveyTitles,
     deleteSurvey,
     updateSurvey
