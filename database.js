@@ -70,6 +70,17 @@ const getQuestionNames = (req, res) => {
     })
 }
 
+const getControlsID = (req, res) => {
+    const { id } = req.body;
+    pool.query('select ID as names from controls where id='+id, (error, results) => {
+        if (error) {
+            res.status(502);
+            throw error;
+        }
+        res.status(201).json(results.rows);
+    })
+}
+
 const updateSurvey = (req, res) => {
     const { id } = req.body;
     const { details } = req.body
@@ -101,6 +112,7 @@ const getResults = (req, res) => {
                 res.status(504);
                 throw error;
             }
+            console.log(results.rows)
             res.status(201).json(results.rows);
         })
     }
@@ -110,6 +122,7 @@ const getResults = (req, res) => {
                 res.status(504);
                 throw error;
             }
+            console.log(results.rows)
             res.status(201).json(results.rows);
         })
     }
@@ -129,5 +142,6 @@ module.exports = {
     getQuestionNames,
     getSurveyTitles,
     deleteSurvey,
-    updateSurvey
+    updateSurvey,
+    getControlsID
 }

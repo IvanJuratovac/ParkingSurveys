@@ -19,7 +19,8 @@ app.post('/surveyType',db.getSurveyTypes);
 app.post('/surveys',db.getSurveys);
 app.post('/surveyNames',db.getQuestionNames);
 app.post('/deleteSurvey',db.deleteSurvey);
-app.post('/updateSurvey',db.updateSurvey)
+app.post('/updateSurvey',db.updateSurvey);
+app.post('/controlsID',db.getControlsID);
 
 app.get('/titles',db.getSurveyTitles);
 
