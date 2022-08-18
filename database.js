@@ -70,17 +70,6 @@ const getQuestionNames = (req, res) => {
     })
 }
 
-const getControlsID = (req, res) => {
-    const { id } = req.body;
-    pool.query('select ID as names from controls where id='+id, (error, results) => {
-        if (error) {
-            res.status(502);
-            throw error;
-        }
-        res.status(201).json(results.rows);
-    })
-}
-
 const updateSurvey = (req, res) => {
     const { id } = req.body;
     const { details } = req.body
@@ -142,6 +131,5 @@ module.exports = {
     getQuestionNames,
     getSurveyTitles,
     deleteSurvey,
-    updateSurvey,
-    getControlsID
+    updateSurvey
 }

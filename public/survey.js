@@ -1,6 +1,7 @@
 var surveyID;
 var surveyJson;
 var deleteBtn;
+var idcontrols;
 
 Survey
     .StylesManager
@@ -12,7 +13,10 @@ function sendResults(sender) {
         type: 'POST',
         url: '/send',
         data: {
-            "results": results
+            "details": results,
+            "idcontrols": idcontrols,
+            "idupdated": 1,
+            "idcreated": 1
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -44,6 +48,7 @@ function deleteSurvey() {
 }
 
 function generateSurvey(id) {
+    idcontrols = id;
     titles = [];
     $.ajax({
         type: 'POST',
