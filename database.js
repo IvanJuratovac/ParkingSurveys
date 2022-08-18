@@ -101,7 +101,7 @@ const getResults = (req, res) => {
                 res.status(504);
                 throw error;
             }
-            console.log(results.rows)
+           
             res.status(201).json(results.rows);
         })
     }
@@ -111,7 +111,7 @@ const getResults = (req, res) => {
                 res.status(504);
                 throw error;
             }
-            console.log(results.rows)
+        
             res.status(201).json(results.rows);
         })
     }
@@ -120,7 +120,7 @@ const getResults = (req, res) => {
     }
     else {
         index++;
-    }
+}
 }
 
 module.exports = {

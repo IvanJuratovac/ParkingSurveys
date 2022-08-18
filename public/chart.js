@@ -21,6 +21,7 @@ function jsonLooper(obj) {
     for (let k in obj) {
         if (k == "title" && obj[k] != mainTitle) {
             titles.push(obj[k]);
+           // console.log(obj[k])
         }
         if (k == "text") {
             labels.push(obj[k]);
@@ -44,6 +45,7 @@ function drawChart(chartTitle, index, key) {
         },
         success: function (data) {
             response = data;
+            
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -170,8 +172,10 @@ function drawChart(chartTitle, index, key) {
 function clickToDraw() {
     $("#container").html("");
     $('#chartContainer').remove();
+    
     for (var i = 0; i < titles.length; i++) {
         drawChart(titles[i], i, surveyID[i]);
+        
         backgroundColor = [];
         counts = {};
         labels = [];
@@ -190,4 +194,5 @@ $("body").on("click", "#charts", function () {
 $("body").on("click", "#chart", function () {
     jsonLooper(surveyJson);
     clickToDraw();
+
 });
