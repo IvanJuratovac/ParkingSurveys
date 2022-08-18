@@ -172,7 +172,6 @@ function drawChart(chartTitle, index, key) {
 function clickToDraw() {
     $("#container").html("");
     $('#chartContainer').remove();
-    
     for (var i = 0; i < titles.length; i++) {
         drawChart(titles[i], i, surveyID[i]);
         

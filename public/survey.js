@@ -64,7 +64,7 @@ function generateSurvey(id) {
             console.log(textStatus);
             console.log(error);
         },
-        async: true
+        async: false
     });
     $.ajax({
         type: 'POST',
