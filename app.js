@@ -13,13 +13,9 @@ app.listen(3000, () => {
 app.use('/', express.static('public'));
 
 app.post('/results', db.getResults);
-app.post('/send', db.insertResults);
-
 app.post('/surveyType',db.getSurveyTypes);
 app.post('/surveys',db.getSurveys);
 app.post('/surveyNames',db.getQuestionNames);
-app.post('/deleteSurvey',db.deleteSurvey);
-app.post('/updateSurvey',db.updateSurvey);
 
 app.get('/titles',db.getSurveyTitles);
 

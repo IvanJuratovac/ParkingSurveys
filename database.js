@@ -33,47 +33,9 @@ const getSurveys = (req, res) => {
     })
 }
 
-const deleteSurvey = (req, res) => {
-    const { id } = req.body;
-    pool.query('delete from controls where id=' + id, (error, results) => {
-        if (error) {
-            res.status(505);
-            throw error
-        }
-        res.status(200).json(results.rows);
-    })
-}
-
-const insertResults = (req, res) => {
-    const { details } = req.body;
-    const { idcontrols } = req.body;
-    const {idupdated}=req.body;
-    const {idcreated} = req.body;
-    pool.query('insert into transactions(details,idcontrols,idupdated,idcreated) values($1,$2,$3,$4) returning *', [details,idcontrols,idupdated,idcreated], (error, results) => {
-        if (error) {
-            res.status(503);
-            throw error;
-        }
-        res.status(201).json(results.rows);
-    })
-}
-
-
 const getQuestionNames = (req, res) => {
     const { id } = req.body;
     pool.query('select surveyNames as names from surveyNames(' + id + ')', (error, results) => {
-        if (error) {
-            res.status(502);
-            throw error;
-        }
-        res.status(201).json(results.rows);
-    })
-}
-
-const updateSurvey = (req, res) => {
-    const { id } = req.body;
-    const { details } = req.body
-    pool.query('update controls set details=$1 where id=$2', [details, id], (error, results) => {
         if (error) {
             res.status(502);
             throw error;
@@ -126,11 +88,8 @@ const getResults = (req, res) => {
 
 module.exports = {
     getResults,
-    insertResults,
     getSurveyTypes,
     getSurveys,
     getQuestionNames,
-    getSurveyTitles,
-    deleteSurvey,
-    updateSurvey
+    getSurveyTitles
 }
