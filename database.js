@@ -97,7 +97,7 @@ const getResults = (req, res) => {
     const { key } = req.body;
     const {idcontrols}=req.body;
     if (type[index] == "checkbox") {
-        pool.query('select count(1), json_array_elements_text(details#>\'{' + key + '}\') as name from transactions group by json_array_elements_text(details#>\'{' + key + '}\') where idcontrols='+idcontrols, (error, results) => {
+        pool.query('select count(1), json_array_elements_text(details#>\'{' + key + '}\') as name from transactions where idcontrols='+idcontrols+' group by json_array_elements_text(details#>\'{' + key + '}\')', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;
@@ -107,7 +107,7 @@ const getResults = (req, res) => {
         })
     }
     else {
-        pool.query('select count(1),details->>\'' + key + '\' as name from transactions where details->>\'' + key + '\'is not null group by details->>\'' + key + '\' where idcontrols='+idcontrols, (error, results) => {
+        pool.query('select count(1), details->>\'' + key + '\' as name from transactions where details->>\'' + key + '\' is not null and idcontrols='+idcontrols+' group by details->>\'' + key + '\'', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;

@@ -41,7 +41,8 @@ function drawChart(chartTitle, index, key) {
         type: 'POST',
         url: '/results',
         data: {
-            "key": key
+            "key": key,
+            "idcontrols": idcontrols
         },
         success: function (data) {
             response = data;
