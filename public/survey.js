@@ -108,7 +108,7 @@ function updateSurvey() {
             type: 'POST',
             url: '/updateSurvey',
             data: {
-                "json": $('#updateAnketa').val(),
+                "details": $('#updateAnketa').val(),
                 "id": deleteBtn
             },
             success: function (data) {
