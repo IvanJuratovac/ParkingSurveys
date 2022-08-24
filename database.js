@@ -7,7 +7,7 @@ const pool = new Pool({
     password: 'Academica2022dev',
     port: 5432
 })
-
+//za rjesavanja problema anketa
 var type = [];
 const getSurveyTypes = (req, res) => {
     const { id } = req.body;
@@ -85,11 +85,41 @@ const getResults = (req, res) => {
         index++;
 }
 }
+//prijavljivanje korisnika
+
+const getUser=(req,res)=>{
+    const {email}=req.body;
+    const {password}=req.body;
+
+    pool.query('select * from users where email='+email+'and password='+password, (error, results) => {
+        if (error) {
+            res.status(508);
+            throw error;
+        }
+        res.status(201).json(results.rows);
+    })
+}
+
+const getAuthorization=(req,res)=>{
+    const {iduser}=req.body;
+
+    pool.query('select * from authorizations where iduser= '+iduser, (error, results) => {
+        if (error) {
+            res.status(508);
+            throw error;
+        }
+        res.status(201).json(results.rows);
+    })
+}
+
+
 
 module.exports = {
     getResults,
     getSurveyTypes,
     getSurveys,
     getQuestionNames,
-    getSurveyTitles
+    getSurveyTitles,
+    getUser,
+    getAuthorization
 }
