@@ -91,7 +91,7 @@ const getUser=(req,res)=>{
     const {email}=req.body;
     const {password}=req.body;
 
-    pool.query('select * from users where email='+email+'and password='+password, (error, results) => {
+    pool.query('select * from users where email=\''+email+'\' and password=\''+password+'\'', (error, results) => {
         if (error) {
             res.status(508);
             throw error;
