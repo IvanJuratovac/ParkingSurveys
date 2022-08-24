@@ -102,8 +102,9 @@ const getUser=(req,res)=>{
 
 const getAuthorization=(req,res)=>{
     const {iduser}=req.body;
+    const {idrouter}=req.body;
 
-    pool.query('select * from authorizations where iduser= '+iduser, (error, results) => {
+    pool.query('select * from authorizations where iduser= '+iduser+' and idrouter='+idrouter, (error, results) => {
         if (error) {
             res.status(508);
             throw error;
