@@ -6,7 +6,6 @@ var deleteBtn;
 Survey
     .StylesManager
     .applyTheme("modern");
-
 function sendResults(sender) {
     let results = JSON.stringify(sender.data);
     $.ajax({
@@ -17,6 +16,9 @@ function sendResults(sender) {
             "idcontrols": idcontrols,
             "idupdated": 1,
             "idcreated": 1
+        },
+        success: function (data) {
+           
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);

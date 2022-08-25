@@ -40,7 +40,6 @@ function getAuthorization(res) {
             "idrouter": "7"
         },
         success: function (data) {
-            console.log(data);
             permissions.read = parseInt(data[0].read);
             permissions.insert = parseInt(data[0].insert);
             permissions.update = parseInt(data[0].update);
@@ -73,7 +72,6 @@ $(document).on('click', '#getLogin', function () {
                 "password": password
             },
             success: function (data) {
-                console.log(data);
                 if (data.length == 0) {
                     $('.modal').modal('show');
                     console.log("unesite ispravne podatke");

@@ -65,7 +65,6 @@ const getResults = (req, res) => {
                 res.status(504);
                 throw error;
             }
-
             res.status(201).json(results.rows);
         })
     }
@@ -75,7 +74,6 @@ const getResults = (req, res) => {
                 res.status(504);
                 throw error;
             }
-
             res.status(201).json(results.rows);
         })
     }
