@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS logging (
 	idcreated integer NOT NULL,
 	updated TIMESTAMP(6) NOT NULL,
 	created TIMESTAMP(6) NOT NULL,
-	CONSTRAINT errorlog_pk PRIMARY KEY (id)
+	CONSTRAINT logging_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
 );
