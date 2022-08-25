@@ -78,25 +78,32 @@ function generateSurvey(id) {
     });
 }
 
-$.ajax({
-    type: 'GET',
-    url: '/titles',
-    success: function (data) {
-        $("#buttonContainer").hide();
-        $("#crud").show();
-        $("#buttonContainer").html("");
-        $.each(data, function (key, value) {
-            $("#buttonContainer").append('<button class="button-34 anketa" id="' + value.id + '" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
-        });
-        $('#loading').hide();
-    },
-    error: function (xhr, textStatus, error) {
-        console.log(xhr.statusText);
-        console.log(textStatus);
-        console.log(error);
-    },
-    async: true
-});
+function getTitles() {
+    $.ajax({
+        type: 'POST',
+        url: '/titles',
+        data: {
+            "idrouter": "7"
+        },
+        success: function (data) {
+            $("#buttonContainer").html("");
+            $.each(data, function (key, value) {
+                $("#buttonContainer").append('<button class="button-34 anketa" id="' + value.id + '" role="button" onclick="generateSurvey(\'' + value.id + '\')">' + value.title + '</button>');
+            });
+            $('#loading').hide();
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: true
+    });
+}
+
+$("#buttonContainer").hide();
+$("#crud").show();
+$('#loading').hide();
 
 $("#chart").prop("disabled", true);
 
@@ -106,9 +113,16 @@ $("body").on("click", ".anketa", function () {
     $("#chart").prop("disabled", false);
     $("#tip").html("");
     deleteBtn = $(this).attr("id");
-    $("#crud").html('<button class="button-34" id="delete' + deleteBtn + '" role="button" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px;">Delete</button>');
-    $("#crud").append('<button class="button-34" id="update' + deleteBtn + '" role="button" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px">Update</button>');
-    $("#crud").append('<br><br><button class="button-34" role="button" id="chart" style="background-color: #e26804ad; box-shadow: #e26804ad 0 10px 20px -10px;">Chart</button>');
+    $("#crud").html("");
+    if (permissions.delete) {
+        $("#crud").append('<button class="button-34" id="delete' + deleteBtn + '" role="button" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px;">Delete</button>');
+    }
+    if (permissions.update) {
+        $("#crud").append('<button class="button-34" id="update' + deleteBtn + '" role="button" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px;">Update</button>');
+    }
+    if (permissions.read) {
+        $("#crud").append('<button class="button-34" role="button" id="chart" style="background-color: #b70000; box-shadow: #b70000 0 10px 20px -10px;">Chart</button>');
+    }
 });
 
 $("body").on("click", "#chart", function () {

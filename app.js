@@ -18,7 +18,4 @@ app.post('/surveys',db.getSurveys);
 app.post('/surveyNames',db.getQuestionNames);
 app.post('/getUser',db.getUser);
 app.post('/getAuthorization',db.getAuthorization);
-
-app.get('/titles',db.getSurveyTitles);
-
-
+app.post('/titles',db.getSurveyTitles);

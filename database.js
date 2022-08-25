@@ -45,7 +45,8 @@ const getQuestionNames = (req, res) => {
 }
 
 const getSurveyTitles = (req, res) => {
-    pool.query('select id, details->>\'title\' as title from controls where details->>\'title\' is not null', (error, results) => {
+    const { idrouter } = req.body;
+    pool.query('select c.id, details->>\'title\' as title from authorizations as a, controls as c where a.idapplication = c.idapplication and idrouter = ' + idrouter, (error, results) => {
         if (error) {
             res.status(508);
             throw error;
@@ -57,24 +58,24 @@ const getSurveyTitles = (req, res) => {
 var index = 0;
 const getResults = (req, res) => {
     const { key } = req.body;
-    const {idcontrols}=req.body;
+    const { idcontrols } = req.body;
     if (type[index] == "checkbox") {
-        pool.query('select count(1), json_array_elements_text(details#>\'{' + key + '}\') as name from transactions where idcontrols='+idcontrols+' group by json_array_elements_text(details#>\'{' + key + '}\')', (error, results) => {
+        pool.query('select count(1), json_array_elements_text(details#>\'{' + key + '}\') as name from transactions where idcontrols=' + idcontrols + ' group by json_array_elements_text(details#>\'{' + key + '}\')', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;
             }
-           
+
             res.status(201).json(results.rows);
         })
     }
     else {
-        pool.query('select count(1), details->>\'' + key + '\' as name from transactions where details->>\'' + key + '\' is not null and idcontrols='+idcontrols+' group by details->>\'' + key + '\'', (error, results) => {
+        pool.query('select count(1), details->>\'' + key + '\' as name from transactions where details->>\'' + key + '\' is not null and idcontrols=' + idcontrols + ' group by details->>\'' + key + '\'', (error, results) => {
             if (error) {
                 res.status(504);
                 throw error;
             }
-        
+
             res.status(201).json(results.rows);
         })
     }
@@ -83,15 +84,15 @@ const getResults = (req, res) => {
     }
     else {
         index++;
-}
+    }
 }
 //prijavljivanje korisnika
 
-const getUser=(req,res)=>{
-    const {email}=req.body;
-    const {password}=req.body;
+const getUser = (req, res) => {
+    const { email } = req.body;
+    const { password } = req.body;
 
-    pool.query('select * from users where email=\''+email+'\' and password=\''+password+'\'', (error, results) => {
+    pool.query('select * from users where email=\'' + email + '\' and password=\'' + password + '\'', (error, results) => {
         if (error) {
             res.status(508);
             throw error;
@@ -100,11 +101,11 @@ const getUser=(req,res)=>{
     })
 }
 
-const getAuthorization=(req,res)=>{
-    const {iduser}=req.body;
-    const {idrouter}=req.body;
+const getAuthorization = (req, res) => {
+    const { iduser } = req.body;
+    const { idrouter } = req.body;
 
-    pool.query('select * from authorizations where iduser= '+iduser+' and idrouter='+idrouter, (error, results) => {
+    pool.query('select * from authorizations where iduser= ' + iduser + ' and idrouter=' + idrouter, (error, results) => {
         if (error) {
             res.status(508);
             throw error;

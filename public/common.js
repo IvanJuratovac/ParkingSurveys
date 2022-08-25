@@ -1,5 +1,11 @@
 var email;
 var password;
+var permissions = {
+    "read": 0,
+    "insert": 0,
+    "update": 0,
+    "delete": 0
+}
 
 modal();
 
@@ -31,10 +37,15 @@ function getAuthorization(res) {
         url: '/getAuthorization',
         data: {
             "iduser": res[0].id,
-            "idrouter": "4"
+            "idrouter": "7"
         },
         success: function (data) {
             console.log(data);
+            permissions.read = parseInt(data[0].read);
+            permissions.insert = parseInt(data[0].insert);
+            permissions.update = parseInt(data[0].update);
+            permissions.delete = parseInt(data[0].delete);
+            getTitles();
             $("#buttonContainer").show();
         },
         error: function (xhr, textStatus, error) {
