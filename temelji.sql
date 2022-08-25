@@ -24,6 +24,18 @@ CREATE TABLE IF NOT EXISTS errorlog (
 ) WITH (
   OIDS=FALSE
 );
+DROP TABLE IF EXISTS logging;
+CREATE TABLE IF NOT EXISTS logging (
+	id serial NOT NULL,
+	details varchar(255) NOT NULL,
+	idupdated integer NOT NULL,
+	idcreated integer NOT NULL,
+	updated TIMESTAMP(6) NOT NULL,
+	created TIMESTAMP(6) NOT NULL,
+	CONSTRAINT errorlog_pk PRIMARY KEY (id)
+) WITH (
+  OIDS=FALSE
+);
 ​
 DROP TABLE IF EXISTS counties;
 CREATE TABLE IF NOT EXISTS counties(
