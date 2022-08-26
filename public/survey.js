@@ -110,8 +110,7 @@ $('#loading').hide();
 $("#chart").prop("disabled", true);
 
 $("body").on("click", "#nova", function () {
-    console.log(routerGetName());
-    $("#container").html('<div class="our-font"><h1>' + routerGetName().responseJSON[0].name + '</h1></div>')
+    $("#container").html('<div class="our-font"><h1>' + getRouter().responseJSON[0].name.name + ' (' + getRouterType().responseJSON[0].name + ')</h1></div>');
 });
 
 $("body").on("click", ".anketa", function () {

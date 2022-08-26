@@ -1,4 +1,4 @@
-const idrouter = 45;
+const idrouter = 13;
 var email;
 var password;
 var permissions = {
@@ -32,10 +32,26 @@ function modal() {
     $('.modal-container').html(output);
 }
 
-function routerGetName() {
+function getRouterType() {
     return $.ajax({
         type: 'POST',
-        url: '/routerGetName',
+        url: '/getRouterType',
+        data: {
+            "id": idrouter
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+function getRouter() {
+    return $.ajax({
+        type: 'POST',
+        url: '/getRouter',
         data: {
             "id": idrouter
         },
@@ -63,8 +79,35 @@ function getAuthorization(res) {
             permissions.delete = parseInt(data[0].delete);
             getTitles();
             $("#buttonContainer").show();
-            routerGetName();
             $("#nova").show();
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+function getUser(email, password) {
+    $.ajax({
+        type: 'POST',
+        url: '/getUser',
+        data: {
+            "email": email,
+            "password": password
+        },
+        success: function (data) {
+            if (data.length == 0) {
+                $('.modal').modal('show');
+                console.log("unesite ispravne podatke");
+            }
+            else {
+                $('.modal').hide();
+                console.log("Uspješan login");
+                getAuthorization(data);
+            }
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -83,30 +126,6 @@ $(document).on('click', '#getLogin', function () {
     } else if (password == null || password == "") {
         console.log('Molimo unesite zaporku');
     } else {
-        $.ajax({
-            type: 'POST',
-            url: '/getUser',
-            data: {
-                "email": email,
-                "password": password
-            },
-            success: function (data) {
-                if (data.length == 0) {
-                    $('.modal').modal('show');
-                    console.log("unesite ispravne podatke");
-                }
-                else {
-                    $('.modal').hide();
-                    console.log("Uspješan login");
-                    getAuthorization(data);
-                }
-            },
-            error: function (xhr, textStatus, error) {
-                console.log(xhr.statusText);
-                console.log(textStatus);
-                console.log(error);
-            },
-            async: false
-        });
+        getUser(email, password);
     }
 })

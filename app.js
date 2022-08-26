@@ -19,4 +19,5 @@ app.post('/surveyNames', db.getQuestionNames);
 app.post('/getUser', db.getUser);
 app.post('/getAuthorization', db.getAuthorization);
 app.post('/titles', db.getSurveyTitles);
-app.post('/routerGetName', db.routerGetName);
+app.post('/getRouter', db.getRouter);
+app.post('/getRouterType', db.getRouterType);
