@@ -18,7 +18,7 @@ function sendResults(sender) {
             "idcreated": 1
         },
         success: function (data) {
-           
+
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -85,7 +85,7 @@ function getTitles() {
         type: 'POST',
         url: '/titles',
         data: {
-            "idrouter": "7"
+            "idrouter": idrouter
         },
         success: function (data) {
             $("#buttonContainer").html("");
@@ -108,6 +108,11 @@ $("#crud").show();
 $('#loading').hide();
 
 $("#chart").prop("disabled", true);
+
+$("body").on("click", "#nova", function () {
+    console.log(routerGetName());
+    $("#container").html('<div class="our-font"><h1>' + routerGetName().responseJSON[0].name + '</h1></div>')
+});
 
 $("body").on("click", ".anketa", function () {
     $('#loading').show();

@@ -1,3 +1,4 @@
+const idrouter = 45;
 var email;
 var password;
 var permissions = {
@@ -31,13 +32,29 @@ function modal() {
     $('.modal-container').html(output);
 }
 
+function routerGetName() {
+    return $.ajax({
+        type: 'POST',
+        url: '/routerGetName',
+        data: {
+            "id": idrouter
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
 function getAuthorization(res) {
     $.ajax({
         type: 'POST',
         url: '/getAuthorization',
         data: {
             "iduser": res[0].id,
-            "idrouter": "7"
+            "idrouter": 45
         },
         success: function (data) {
             permissions.read = parseInt(data[0].read);
@@ -46,6 +63,8 @@ function getAuthorization(res) {
             permissions.delete = parseInt(data[0].delete);
             getTitles();
             $("#buttonContainer").show();
+            routerGetName();
+            $("#nova").show();
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);

@@ -6,7 +6,9 @@
     <meta charset="utf-8">
     <link rel="icon" href="data:,">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
 
     <!-- Modern theme -->
     <link href="https://unpkg.com/survey-jquery/modern.min.css" type="text/css" rel="stylesheet">
@@ -42,6 +44,10 @@
         width: fit-content;
         word-break: break-word;
         border: 0;
+    }
+
+    .our-font {
+        font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
     }
 
     .button-34:disabled {
@@ -116,6 +122,11 @@
 </style>
 
 <body>
+    <button class="button-34 novaAnketa" role="button" id="nova"
+        style="background-color: #0da200; box-shadow: #0da200 0 10px 20px -10px; display: none;">Otkrij
+        lokaciju</button>
+    <br>
+    <br>
     <div class="modal-container">
     </div>
     <div id="buttonContainer">
