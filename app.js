@@ -19,3 +19,4 @@ app.post('/surveyNames',db.getQuestionNames);
 app.post('/getUser',db.getUser);
 app.post('/getAuthorization',db.getAuthorization);
 app.post('/titles',db.getSurveyTitles);
+app.post('/routergetname',db.RouterGetName);

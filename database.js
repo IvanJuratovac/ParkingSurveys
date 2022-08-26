@@ -112,7 +112,17 @@ const getAuthorization = (req, res) => {
     })
 }
 
+const RouterGetName = (req, res) => {
+    const { id } = req.body;
 
+    pool.query('select routergetname(' + id + ')' , (error, results) => {
+        if (error) {
+            res.status(508);
+            throw error;
+        }
+        res.status(201).json(results.rows);
+    })
+}
 
 module.exports = {
     getResults,
@@ -121,5 +131,6 @@ module.exports = {
     getQuestionNames,
     getSurveyTitles,
     getUser,
-    getAuthorization
+    getAuthorization,
+    RouterGetName
 }
