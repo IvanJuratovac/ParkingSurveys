@@ -8,6 +8,7 @@ const pool = new Pool({
     port: 5432
 })
 //za rjesavanja problema anketa
+//dobivanje tipova pitanja iz određene ankete zbog prilagodbe pretrazivanja
 var type = [];
 const getSurveyTypes = (req, res) => {
     const { id } = req.body;
@@ -21,7 +22,7 @@ const getSurveyTypes = (req, res) => {
     })
 }
 
-
+//dohvacanje određene ankete 
 const getSurveys = (req, res) => {
     const { id } = req.body;
     pool.query('select details as title from controls where id=' + id, (error, results) => {
@@ -32,7 +33,7 @@ const getSurveys = (req, res) => {
         res.status(200).json(results.rows);
     })
 }
-
+//dohvacanje imena anketa za prikaz grafikona
 const getQuestionNames = (req, res) => {
     const { id } = req.body;
     pool.query('select surveyNames as names from surveyNames(' + id + ')', (error, results) => {
@@ -43,7 +44,7 @@ const getQuestionNames = (req, res) => {
         res.status(201).json(results.rows);
     })
 }
-
+//dohvacanje titles za anketu kako bi se iscrto grafikon
 const getSurveyTitles = (req, res) => {
     const { idrouter } = req.body;
     pool.query('select c.id, details->>\'title\' as title from authorizations as a, controls as c where a.idapplication = c.idapplication and idrouter = ' + idrouter, (error, results) => {
@@ -54,7 +55,7 @@ const getSurveyTitles = (req, res) => {
         res.status(201).json(results.rows);
     })
 }
-
+//po određenom pitanju ide određeni query 
 var index = 0;
 const getResults = (req, res) => {
     const { key } = req.body;
