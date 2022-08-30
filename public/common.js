@@ -90,6 +90,53 @@ function getAuthorization(res) {
     });
 }
 
+function authenticate(accessToken, res) {
+    $.ajax({
+        type: 'GET',
+        url: '/token',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer " + accessToken
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == 200) {
+                console.log("Uspješan login");
+                console.log(data);
+                $('.modal').hide();
+                getAuthorization(res);
+            }
+            else {
+                console.log(data);
+            }
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+function login(email, res) {
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            "username": email
+        },
+        success: function (data) {
+            authenticate(data.accessToken, res);
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
 function getUser(email, password) {
     $.ajax({
         type: 'POST',
@@ -104,9 +151,7 @@ function getUser(email, password) {
                 console.log("unesite ispravne podatke");
             }
             else {
-                $('.modal').hide();
-                console.log("Uspješan login");
-                getAuthorization(data);
+                login(email, data);
             }
         },
         error: function (xhr, textStatus, error) {
