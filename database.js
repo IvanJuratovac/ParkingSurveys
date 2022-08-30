@@ -1,4 +1,5 @@
 const Pool = require('pg').Pool
+const crypto = require('crypto');
 console.log('connecting...');
 const pool = new Pool({
     user: 'fgaspar',
@@ -87,9 +88,19 @@ const getResults = (req, res) => {
 }
 //prijavljivanje korisnika
 
-const getUser = (req, res) => {
+const getUser = async (req, res) => {
     const { email } = req.body;
     const { password } = req.body;
+
+    try {
+        const salt = crypto.randomBytes(16).toString('hex')
+        const hash = crypto.pbkdf2Sync(password, salt, 1000, 60, 'sha256').toString('hex')
+
+        console.log(hash)
+    }
+    catch {
+        res.status(403);
+    }
 
     pool.query('select * from users where email=\'' + email + '\' and password=\'' + password + '\'', (error, results) => {
         if (error) {
