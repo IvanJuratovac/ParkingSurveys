@@ -77,9 +77,54 @@ function getAuthorization(res) {
             permissions.insert = parseInt(data[0].insert);
             permissions.update = parseInt(data[0].update);
             permissions.delete = parseInt(data[0].delete);
-            getTitles();
-            $("#buttonContainer").show();
-            $("#nova").show();
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+function authenticate(accessToken) {
+    $.ajax({
+        type: 'GET',
+        url: '/token',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer " + accessToken
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == 200) {
+                console.log("Uspješan login");
+                getTitles();
+                $("#buttonContainer").show();
+                $("#nova").show();
+                $('.modal').hide();
+            }
+            else {
+                console.log("Neuspješan login");
+            }
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+function login(email) {
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            "username": email
+        },
+        success: function (data) {
+            authenticate(data.accessToken);
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -101,11 +146,10 @@ function getUser(email, password) {
         success: function (data) {
             if (data.length == 0) {
                 $('.modal').modal('show');
-                console.log("unesite ispravne podatke");
+                console.log("Neuspješan login");
             }
             else {
-                $('.modal').hide();
-                console.log("Uspješan login");
+                login(email);
                 getAuthorization(data);
             }
         },
