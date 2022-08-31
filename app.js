@@ -2,9 +2,12 @@ const express = require("express");
 const app = express();
 const db = require('./database');
 const bodyParser = require("body-parser");
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.listen(3000, () => {
     console.log("server is listening on port 3000");
@@ -21,3 +24,33 @@ app.post('/getAuthorization', db.getAuthorization);
 app.post('/titles', db.getSurveyTitles);
 app.post('/getRouter', db.getRouter);
 app.post('/getRouterType', db.getRouterType);
+
+app.post('/login', (req, res) => {
+    const username = req.body.username;
+    const user = { name: username }
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+    res.json({ accessToken: accessToken });
+});
+
+app.get('/token', authenticateToken);
+
+function authenticateToken(req, res) {
+    console.log("/token");
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) {
+        console.log("token null");
+        res.status(401).send("Token je prazan");
+    }
+    else {
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            if (err) {
+                console.log("token verification error");
+                res.status(403).send("Pogrešan token");
+            }
+            else {
+                res.status(200).json(user);
+            }
+        });
+    }
+}
