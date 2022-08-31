@@ -1,4 +1,4 @@
-const idrouter = 13;
+const idrouter = 45;
 var email;
 var password;
 var permissions = {
@@ -70,7 +70,7 @@ function getAuthorization(res) {
         url: '/getAuthorization',
         data: {
             "iduser": res[0].id,
-            "idrouter": 45
+            "idrouter": 4
         },
         success: function (data) {
             permissions.read = parseInt(data[0].read);
@@ -138,6 +138,21 @@ function login(email) {
 function getUser(email, password) {
     $.ajax({
         type: 'POST',
+        url: '/hashingFunction',
+        data: {
+            "password": password
+        },
+        success: function (data) {
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+    $.ajax({
+        type: 'POST',
         url: '/getUser',
         data: {
             "email": email,
@@ -146,7 +161,7 @@ function getUser(email, password) {
         success: function (data) {
             if (data.length == 0) {
                 $('.modal').modal('show');
-                console.log("Neuspješan login");
+                console.log();
             }
             else {
                 login(email);
@@ -160,6 +175,7 @@ function getUser(email, password) {
         },
         async: false
     });
+  
 }
 
 $(document).on('click', '#getLogin', function () {

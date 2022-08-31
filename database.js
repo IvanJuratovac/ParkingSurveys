@@ -29,6 +29,20 @@ const getSurveys = (req, res) => {
         res.status(200).json(results.rows);
     })
 }
+
+const insertResults = (req, res) => {
+    const { details } = req.body;
+    const { idcontrols } = req.body;
+    const {idupdated}=req.body;
+    const {idcreated} = req.body;
+    pool.query('insert into transactions(details,idcontrols,idupdated,idcreated) values($1,$2,$3,$4) returning *', [details,idcontrols,idupdated,idcreated], (error, results) => {
+        if (error) {
+            res.status(503);
+            throw error;
+        }
+        res.status(201).json(results.rows);
+    })
+}
 //dohvacanje imena anketa za prikaz grafikona
 const getQuestionNames = (req, res) => {
     const { id } = req.body;
@@ -83,18 +97,37 @@ const getResults = (req, res) => {
 }
 //prijavljivanje korisnika
 
+var hashedPassword1;
+const hashingF =  (req, res) => {
+    const { password } = req.body;
+
+    pool.query('SELECT hashing($1)', [password],(error, results) => {
+        if (error) {
+            res.status(508);
+            throw error;
+        }
+        hashedPassword1=results.rows[0].hashing;
+        console.log(hashedPassword1)
+        res.status(201).json(results.rows);
+    })
+}
 const getUser = async (req, res) => {
     const { email } = req.body;
-    const { password } = req.body;
+    const  password  = hashedPassword1;
 
     pool.query('select * from users where email=\'' + email + '\' and password=\'' + password + '\'', (error, results) => {
         if (error) {
             res.status(508);
             throw error;
         }
+        //hashPass=results.rows[0].password;
+        console.log(password)
         res.status(201).json(results.rows);
     })
 }
+
+
+
 
 const getAuthorization = (req, res) => {
     const { iduser } = req.body;
@@ -142,5 +175,7 @@ module.exports = {
     getUser,
     getAuthorization,
     getRouter,
-    getRouterType
+    getRouterType,
+    insertResults,
+    hashingF
 }

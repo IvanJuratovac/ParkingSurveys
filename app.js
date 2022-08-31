@@ -20,10 +20,12 @@ app.post('/surveyType', db.getSurveyTypes);
 app.post('/surveys', db.getSurveys);
 app.post('/surveyNames', db.getQuestionNames);
 app.post('/getUser', db.getUser);
+app.post('/hashingFunction', db.hashingF);
 app.post('/getAuthorization', db.getAuthorization);
 app.post('/titles', db.getSurveyTitles);
 app.post('/getRouter', db.getRouter);
 app.post('/getRouterType', db.getRouterType);
+app.post('/send', db.insertResults);
 
 app.post('/login', (req, res) => {
     const username = req.body.username;
