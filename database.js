@@ -112,9 +112,8 @@ const hashingF =  (req, res) => {
 }
 const getUser = async (req, res) => {
     const { email } = req.body;
-    const  password  = hashedPassword1;
 
-    pool.query('select * from users where email=\'' + email + '\' and password=\'' + password + '\'', (error, results) => {
+    pool.query('select * from users where email=\'' + email + '\' and password=\'' + hashedPassword1 + '\'', (error, results) => {
         if (error) {
             res.status(508);
             throw error;
