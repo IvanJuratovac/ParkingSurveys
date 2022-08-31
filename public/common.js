@@ -77,9 +77,6 @@ function getAuthorization(res) {
             permissions.insert = parseInt(data[0].insert);
             permissions.update = parseInt(data[0].update);
             permissions.delete = parseInt(data[0].delete);
-            getTitles();
-            $("#buttonContainer").show();
-            $("#nova").show();
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -90,7 +87,7 @@ function getAuthorization(res) {
     });
 }
 
-function authenticate(accessToken, res) {
+function authenticate(accessToken) {
     $.ajax({
         type: 'GET',
         url: '/token',
@@ -101,12 +98,13 @@ function authenticate(accessToken, res) {
         success: function (data, textStatus, xhr) {
             if (xhr.status == 200) {
                 console.log("Uspješan login");
-                console.log(data);
+                getTitles();
+                $("#buttonContainer").show();
+                $("#nova").show();
                 $('.modal').hide();
-                getAuthorization(res);
             }
             else {
-                console.log(data);
+                console.log("Neuspješan login");
             }
         },
         error: function (xhr, textStatus, error) {
@@ -118,7 +116,7 @@ function authenticate(accessToken, res) {
     });
 }
 
-function login(email, res) {
+function login(email) {
     $.ajax({
         type: 'POST',
         url: '/login',
@@ -126,7 +124,7 @@ function login(email, res) {
             "username": email
         },
         success: function (data) {
-            authenticate(data.accessToken, res);
+            authenticate(data.accessToken);
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -148,10 +146,11 @@ function getUser(email, password) {
         success: function (data) {
             if (data.length == 0) {
                 $('.modal').modal('show');
-                console.log("unesite ispravne podatke");
+                console.log("Neuspješan login");
             }
             else {
-                login(email, data);
+                login(email);
+                getAuthorization(data);
             }
         },
         error: function (xhr, textStatus, error) {

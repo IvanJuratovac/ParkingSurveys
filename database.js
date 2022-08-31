@@ -1,12 +1,7 @@
-const Pool = require('pg').Pool
+const Pool = require('pg').Pool;
+const credentials = require('./credentials.json');
 console.log('connecting...');
-const pool = new Pool({
-    user: 'fgaspar',
-    host: 'postgres-dev',
-    database: 'temelji',
-    password: 'Academica2022dev',
-    port: 5432
-})
+const pool = new Pool(credentials);
 //za rjesavanja problema anketa
 //dobivanje tipova pitanja iz određene ankete zbog prilagodbe pretrazivanja
 var type = [];
