@@ -165,11 +165,11 @@ function getUser(email, password) {
         success: function (data) {
             if (data.length == 0) {
                 $('.modal').modal('show');
-                console.log();
+                console.log("Neuspješan login");
             }
             else {
-                login(email);
-                getAuthorization(data);
+                console.log(data);
+                login(data[0].id);
             }
         },
         error: function (xhr, textStatus, error) {
@@ -180,6 +180,80 @@ function getUser(email, password) {
         async: false
     });
   
+}
+
+function login(IDuser) {
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            "IDuser": IDuser
+        },
+        success: function (data) {
+            console.log(data);
+            authenticate(data.accessToken);
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+function authenticate(accessToken) {
+    $.ajax({
+        type: 'GET',
+        url: '/token',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer " + accessToken
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == 200) {
+                console.log(data);
+                getAuthorization(data.IDuser);
+            }
+            else {
+                console.log("Neuspješan login");
+            }
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+function getAuthorization(IDuser) {
+    $.ajax({
+        type: 'POST',
+        url: '/getAuthorization',
+        data: {
+            "iduser": IDuser,
+            "idrouter": 45
+        },
+        success: function (data) {
+            console.log(data);
+            permissions.read = parseInt(data[0].read);
+            permissions.insert = parseInt(data[0].insert);
+            permissions.update = parseInt(data[0].update);
+            permissions.delete = parseInt(data[0].delete);
+            getTitles();
+            $("#buttonContainer").show();
+            $("#nova").show();
+            $('.modal').hide();
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
 }
 
 $(document).on('click', '#getLogin', function () {

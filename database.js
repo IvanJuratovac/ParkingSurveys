@@ -1,5 +1,4 @@
 const Pool = require('pg').Pool
-const bcrypt = require('bcrypt');
 const credentials = require('./credentials.json');
 console.log('connecting...');
 const pool = new Pool(credentials);
