@@ -107,7 +107,6 @@ const hashingF =  (req, res) => {
             throw error;
         }
         hashedPassword1=results.rows[0].hashing;
-        console.log(hashedPassword1)
         res.status(201).json(results.rows);
     })
 }
@@ -120,8 +119,6 @@ const getUser = async (req, res) => {
             res.status(508);
             throw error;
         }
-        //hashPass=results.rows[0].password;
-        console.log(password)
         res.status(201).json(results.rows);
     })
 }

@@ -70,8 +70,9 @@ function getAuthorization(res) {
         url: '/getAuthorization',
         data: {
             "iduser": res[0].id,
-            "idrouter": 4
+            "idrouter": 45
         },
+        
         success: function (data) {
             permissions.read = parseInt(data[0].read);
             permissions.insert = parseInt(data[0].insert);
@@ -79,12 +80,15 @@ function getAuthorization(res) {
             permissions.delete = parseInt(data[0].delete);
         },
         error: function (xhr, textStatus, error) {
+            console.log(data)
             console.log(xhr.statusText);
             console.log(textStatus);
             console.log(error);
+          
         },
         async: false
     });
+  
 }
 
 function authenticate(accessToken) {
