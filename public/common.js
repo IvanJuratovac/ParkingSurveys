@@ -64,19 +64,43 @@ function getRouter() {
     });
 }
 
-function getAuthorization(res) {
+function getUser(email, password) {
     $.ajax({
         type: 'POST',
-        url: '/getAuthorization',
+        url: '/getUser',
         data: {
-            "iduser": res[0].id,
-            "idrouter": 45
+            "email": email,
+            "password": password
         },
         success: function (data) {
-            permissions.read = parseInt(data[0].read);
-            permissions.insert = parseInt(data[0].insert);
-            permissions.update = parseInt(data[0].update);
-            permissions.delete = parseInt(data[0].delete);
+            if (data.length == 0) {
+                $('.modal').modal('show');
+                console.log("Neuspješan login");
+            }
+            else {
+                console.log(data);
+                login(data[0].id);
+            }
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+}
+
+function login(IDuser) {
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            "IDuser": IDuser
+        },
+        success: function (data) {
+            console.log(data);
+            authenticate(data.accessToken);
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -97,11 +121,8 @@ function authenticate(accessToken) {
         },
         success: function (data, textStatus, xhr) {
             if (xhr.status == 200) {
-                console.log("Uspješan login");
-                getTitles();
-                $("#buttonContainer").show();
-                $("#nova").show();
-                $('.modal').hide();
+                console.log(data);
+                getAuthorization(data.IDuser);
             }
             else {
                 console.log("Neuspješan login");
@@ -116,42 +137,24 @@ function authenticate(accessToken) {
     });
 }
 
-function login(email) {
+function getAuthorization(IDuser) {
     $.ajax({
         type: 'POST',
-        url: '/login',
+        url: '/getAuthorization',
         data: {
-            "username": email
+            "iduser": IDuser,
+            "idrouter": 45
         },
         success: function (data) {
-            authenticate(data.accessToken);
-        },
-        error: function (xhr, textStatus, error) {
-            console.log(xhr.statusText);
-            console.log(textStatus);
-            console.log(error);
-        },
-        async: false
-    });
-}
-
-function getUser(email, password) {
-    $.ajax({
-        type: 'POST',
-        url: '/getUser',
-        data: {
-            "email": email,
-            "password": password
-        },
-        success: function (data) {
-            if (data.length == 0) {
-                $('.modal').modal('show');
-                console.log("Neuspješan login");
-            }
-            else {
-                login(email);
-                getAuthorization(data);
-            }
+            console.log(data);
+            permissions.read = parseInt(data[0].read);
+            permissions.insert = parseInt(data[0].insert);
+            permissions.update = parseInt(data[0].update);
+            permissions.delete = parseInt(data[0].delete);
+            getTitles();
+            $("#buttonContainer").show();
+            $("#nova").show();
+            $('.modal').hide();
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
