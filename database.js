@@ -1,5 +1,4 @@
-const Pool = require('pg').Pool;
-const crypto = require('crypto');
+const Pool = require('pg').Pool
 const credentials = require('./credentials.json');
 console.log('connecting...');
 const pool = new Pool(credentials);
@@ -27,6 +26,20 @@ const getSurveys = (req, res) => {
             throw error
         }
         res.status(200).json(results.rows);
+    })
+}
+
+const insertResults = (req, res) => {
+    const { details } = req.body;
+    const { idcontrols } = req.body;
+    const {idupdated}=req.body;
+    const {idcreated} = req.body;
+    pool.query('insert into transactions(details,idcontrols,idupdated,idcreated) values($1,$2,$3,$4) returning *', [details,idcontrols,idupdated,idcreated], (error, results) => {
+        if (error) {
+            res.status(503);
+            throw error;
+        }
+        res.status(201).json(results.rows);
     })
 }
 //dohvacanje imena anketa za prikaz grafikona
@@ -83,21 +96,22 @@ const getResults = (req, res) => {
 }
 //prijavljivanje korisnika
 
+var hashedPassword1;
+const hashingF =  (req, res) => {
+    const { password } = req.body;
+    pool.query('SELECT hashing($1)', [password],(error, results) => {
+        if (error) {
+            res.status(508);
+            throw error;
+        }
+        hashedPassword1=results.rows[0].hashing;
+        res.status(201).json(results.rows);
+    })
+}
 const getUser = async (req, res) => {
     const { email } = req.body;
-    const { password } = req.body;
 
-    try {
-        const salt = crypto.randomBytes(16).toString('hex')
-        const hash = crypto.pbkdf2Sync(password, salt, 1000, 60, 'sha256').toString('hex')
-
-        console.log(hash)
-    }
-    catch {
-        res.status(403);
-    }
-
-    pool.query('select * from users where email=\'' + email + '\' and password=\'' + password + '\'', (error, results) => {
+    pool.query('select * from users where email=\'' + email + '\' and password=\'' + hashedPassword1 + '\'', (error, results) => {
         if (error) {
             res.status(508);
             throw error;
@@ -105,6 +119,9 @@ const getUser = async (req, res) => {
         res.status(201).json(results.rows);
     })
 }
+
+
+
 
 const getAuthorization = (req, res) => {
     const { iduser } = req.body;
@@ -152,5 +169,7 @@ module.exports = {
     getUser,
     getAuthorization,
     getRouter,
-    getRouterType
+    getRouterType,
+    insertResults,
+    hashingF
 }

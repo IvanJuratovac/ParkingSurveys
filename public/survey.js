@@ -14,8 +14,8 @@ function sendResults(sender) {
         data: {
             "details": results,
             "idcontrols": idcontrols,
-            "idupdated": 1,
-            "idcreated": 1
+            "idupdated": 4,
+            "idcreated": 4
         },
         success: function (data) {
 
