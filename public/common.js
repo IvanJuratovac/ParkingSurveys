@@ -1,4 +1,4 @@
-const idrouter = 13;
+const idrouter = 4;
 var email;
 var password;
 var permissions = {
@@ -67,6 +67,21 @@ function getRouter() {
 function getUser(email, password) {
     $.ajax({
         type: 'POST',
+        url: '/hashingFunction',
+        data: {
+            "password": password
+        },
+        success: function (data) {
+        },
+        error: function (xhr, textStatus, error) {
+            console.log(xhr.statusText);
+            console.log(textStatus);
+            console.log(error);
+        },
+        async: false
+    });
+    $.ajax({
+        type: 'POST',
         url: '/getUser',
         data: {
             "email": email,
@@ -78,7 +93,6 @@ function getUser(email, password) {
                 console.log("Neuspješan login");
             }
             else {
-                console.log(data);
                 login(data[0].id);
             }
         },
@@ -99,7 +113,6 @@ function login(IDuser) {
             "IDuser": IDuser
         },
         success: function (data) {
-            console.log(data);
             authenticate(data.accessToken);
         },
         error: function (xhr, textStatus, error) {
@@ -121,7 +134,6 @@ function authenticate(accessToken) {
         },
         success: function (data, textStatus, xhr) {
             if (xhr.status == 200) {
-                console.log(data);
                 getAuthorization(data.IDuser);
             }
             else {
@@ -143,7 +155,7 @@ function getAuthorization(IDuser) {
         url: '/getAuthorization',
         data: {
             "iduser": IDuser,
-            "idrouter": 45
+            "idrouter": 4
         },
         success: function (data) {
             console.log(data);
