@@ -9,31 +9,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.listen(3000, () => {
-    console.log("server is listening on port 3000");
-});
+var router = express.Router();
 
-app.use('/', express.static('public'));
+router.use('/', express.static('public'));
 
-app.post('/results', db.getResults);
-app.post('/surveyType', db.getSurveyTypes);
-app.post('/surveys', db.getSurveys);
-app.post('/surveyNames', db.getQuestionNames);
-app.post('/getUser', db.getUser);
-app.post('/hashingFunction', db.hashingF);
-app.post('/getAuthorization', db.getAuthorization);
-app.post('/titles', db.getSurveyTitles);
-app.post('/getRouter', db.getRouter);
-app.post('/getRouterType', db.getRouterType);
-app.post('/send', db.insertResults);
+router.post('/results', db.getResults);
+router.post('/surveyType', db.getSurveyTypes);
+router.post('/surveys', db.getSurveys);
+router.post('/surveyNames', db.getQuestionNames);
+router.post('/getUser', db.getUser);
+router.post('/hashingFunction', db.hashingF);
+router.post('/getAuthorization', db.getAuthorization);
+router.post('/titles', db.getSurveyTitles);
+router.post('/getRouter', db.getRouter);
+router.post('/getRouterType', db.getRouterType);
+router.post('/send', db.insertResults);
 
-app.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
     const IDuser = { IDuser: req.body.IDuser }
     const accessToken = jwt.sign(IDuser, process.env.ACCESS_TOKEN_SECRET);
     res.json({ accessToken: accessToken });
 });
 
-app.get('/token', authenticateToken);
+router.get('/token', authenticateToken);
 
 function authenticateToken(req, res) {
     console.log("/token");
@@ -55,3 +53,8 @@ function authenticateToken(req, res) {
         });
     }
 }
+
+app.use('/api', router);
+app.listen(3000, () => {
+    console.log("server is listening on port 3000");
+});
