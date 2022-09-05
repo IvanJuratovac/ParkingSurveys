@@ -1,4 +1,4 @@
-const idrouter = 45;
+const idrouter = 4;
 var email;
 var password;
 var permissions = {
@@ -234,7 +234,7 @@ function getAuthorization(IDuser) {
         url: '/getAuthorization',
         data: {
             "iduser": IDuser,
-            "idrouter": 45
+            "idrouter": 4
         },
         success: function (data) {
             console.log(data);
