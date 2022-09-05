@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const db = require('./database');
 const bodyParser = require("body-parser");
-const jwt = require('jsonwebtoken');
+const auth = require('./auth');
 require('dotenv').config();
 
 app.use(bodyParser.json());
@@ -25,34 +25,8 @@ router.post('/getRouter', db.getRouter);
 router.post('/getRouterType', db.getRouterType);
 router.post('/send', db.insertResults);
 
-router.post('/login', (req, res) => {
-    const IDuser = { IDuser: req.body.IDuser }
-    const accessToken = jwt.sign(IDuser, process.env.ACCESS_TOKEN_SECRET);
-    res.json({ accessToken: accessToken });
-});
-
-router.get('/token', authenticateToken);
-
-function authenticateToken(req, res) {
-    console.log("/token");
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (token == null) {
-        console.log("token null");
-        res.status(401).send("Token je prazan");
-    }
-    else {
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, IDuser) => {
-            if (err) {
-                console.log("token verification error");
-                res.status(403).send("Pogrešan token");
-            }
-            else {
-                res.status(200).json(IDuser);
-            }
-        });
-    }
-}
+router.post('/login', auth.makeToken);
+router.get('/token', auth.authenticateToken);
 
 app.use('/api', router);
 app.listen(3000, () => {
