@@ -6,7 +6,8 @@ const auth = require('./auth');
 require('dotenv').config();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, parameterLimit: 100000,
+    limit: '50mb' }));
 app.use(express.json());
 
 var router = express.Router();

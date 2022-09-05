@@ -2,6 +2,7 @@ const Pool = require('pg').Pool
 const credentials = require('./credentials.json');
 console.log('connecting...');
 const pool = new Pool(credentials);
+const Jimp = require('jimp');
 //za rjesavanja problema anketa
 //dobivanje tipova pitanja iz određene ankete zbog prilagodbe pretrazivanja
 var type = [];
@@ -32,16 +33,60 @@ const getSurveys = (req, res) => {
 const insertResults = (req, res) => {
     const { details } = req.body;
     const { idcontrols } = req.body;
-    const {idupdated}=req.body;
-    const {idcreated} = req.body;
-    pool.query('insert into transactions(details,idcontrols,idupdated,idcreated) values($1,$2,$3,$4) returning *', [details,idcontrols,idupdated,idcreated], (error, results) => {
-        if (error) {
-            res.status(503);
-            throw error;
+    const { idupdated } = req.body;
+    const { idcreated } = req.body;
+
+    var tmp = JSON.parse(details);
+    if (tmp.file !== undefined) {
+        var base64;
+        switch (tmp.file[0].name.split('.')[1]) {
+            case 'jpg':
+                base64 = tmp.file[0].content.substring(23);
+                tmp.file = './pictures/' + Date.now() + '.jpg';
+                break;
+
+            case 'png':
+                base64 = tmp.file[0].content.substring(21);
+                tmp.file = './pictures/' + Date.now() + '.png';
+                break;
+
+            case 'bmp':
+                base64 = tmp.file[0].content.substring(21);
+                tmp.file = './pictures/' + Date.now() + '.bmp';
+                break;
+
+            default:
+
         }
-        res.status(201).json(results.rows);
-    })
+        const buffer = Buffer.from(base64, 'base64');
+        Jimp.read(buffer, (err, res1) => {
+            if (err) {
+                throw new Error(err);
+            }
+            res1.write(tmp.file)
+        })
+
+        pool.query('insert into transactions(details,idcontrols,idupdated,idcreated) values($1,$2,$3,$4) returning *', [JSON.stringify(tmp), idcontrols, idupdated, idcreated], (error, results) => {
+            if (error) {
+                console.log('greska')
+                res.status(503);
+                throw error;
+            }
+            res.status(201).json(results.rows);
+        })
+    }
+    else {
+        pool.query('insert into transactions(details,idcontrols,idupdated,idcreated) values($1,$2,$3,$4) returning *', [details, idcontrols, idupdated, idcreated], (error, results) => {
+            if (error) {
+                res.status(503);
+                throw error;
+            }
+            res.status(201).json(results.rows);
+        })
+    }
 }
+
+
 //dohvacanje imena anketa za prikaz grafikona
 const getQuestionNames = (req, res) => {
     const { id } = req.body;
@@ -97,14 +142,14 @@ const getResults = (req, res) => {
 //prijavljivanje korisnika
 
 var hashedPassword1;
-const hashingF =  (req, res) => {
+const hashingF = (req, res) => {
     const { password } = req.body;
-    pool.query('SELECT hashing($1)', [password],(error, results) => {
+    pool.query('SELECT hashing($1)', [password], (error, results) => {
         if (error) {
             res.status(508);
             throw error;
         }
-        hashedPassword1=results.rows[0].hashing;
+        hashedPassword1 = results.rows[0].hashing;
         res.status(201).json(results.rows);
     })
 }
