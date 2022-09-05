@@ -34,8 +34,8 @@ function modal() {
 
 function getRouterType() {
     return $.ajax({
-        type: 'POST',
-        url: '/getRouterType',
+        type: 'GET',
+        url: 'router/type',
         data: {
             "id": idrouter
         },
@@ -50,8 +50,8 @@ function getRouterType() {
 
 function getRouter() {
     return $.ajax({
-        type: 'POST',
-        url: '/getRouter',
+        type: 'GET',
+        url: 'router',
         data: {
             "id": idrouter
         },
@@ -66,12 +66,10 @@ function getRouter() {
 
 function getUser(email, password) {
     $.ajax({
-        type: 'POST',
-        url: '/hashingFunction',
+        type: 'GET',
+        url: 'hashing',
         data: {
             "password": password
-        },
-        success: function (data) {
         },
         error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
@@ -81,11 +79,10 @@ function getUser(email, password) {
         async: false
     });
     $.ajax({
-        type: 'POST',
-        url: '/getUser',
+        type: 'GET',
+        url: 'users',
         data: {
-            "email": email,
-            "password": password
+            "email": email
         },
         success: function (data) {
             if (data.length == 0) {
@@ -108,7 +105,7 @@ function getUser(email, password) {
 function login(IDuser) {
     $.ajax({
         type: 'POST',
-        url: '/login',
+        url: 'login',
         data: {
             "IDuser": IDuser
         },
@@ -127,14 +124,14 @@ function login(IDuser) {
 function authenticate(accessToken) {
     $.ajax({
         type: 'GET',
-        url: '/token',
+        url: 'token',
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Bearer " + accessToken
         },
         success: function (data, textStatus, xhr) {
             if (xhr.status == 200) {
-                getAuthorization(data.IDuser);
+                authorization(data.IDuser);
             }
             else {
                 console.log("Neuspješan login");
@@ -149,16 +146,15 @@ function authenticate(accessToken) {
     });
 }
 
-function getAuthorization(IDuser) {
+function authorization(IDuser) {
     $.ajax({
-        type: 'POST',
-        url: '/getAuthorization',
+        type: 'GET',
+        url: 'authorization',
         data: {
             "iduser": IDuser,
             "idrouter": 4
         },
         success: function (data) {
-            console.log(data);
             permissions.read = parseInt(data[0].read);
             permissions.insert = parseInt(data[0].insert);
             permissions.update = parseInt(data[0].update);

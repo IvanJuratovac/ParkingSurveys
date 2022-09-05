@@ -6,28 +6,33 @@ const auth = require('./auth');
 require('dotenv').config();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true, parameterLimit: 100000,
-    limit: '50mb' }));
+app.use(bodyParser.urlencoded({
+    extended: true,
+    parameterLimit: 100000,
+    limit: '50mb'
+}));
 app.use(express.json());
 
 var router = express.Router();
 
 router.use('/', express.static('public'));
 
-router.post('/results', db.getResults);
-router.post('/surveyType', db.getSurveyTypes);
-router.post('/surveys', db.getSurveys);
-router.post('/surveyNames', db.getQuestionNames);
-router.post('/getUser', db.getUser);
-router.post('/hashingFunction', db.hashingF);
-router.post('/getAuthorization', db.getAuthorization);
-router.post('/titles', db.getSurveyTitles);
-router.post('/getRouter', db.getRouter);
-router.post('/getRouterType', db.getRouterType);
-router.post('/send', db.insertResults);
-
-router.post('/login', auth.makeToken);
+router.get('/users', db.getUser);
+router.get('/hashing', db.hashingF);
+router.get('/results', db.getResults);
+router.get('/authorization', db.getAuthorization);
 router.get('/token', auth.authenticateToken);
+
+router.get('/surveys', db.getSurveys);
+router.get('/surveys/names', db.getSurveyNames);
+router.get('/surveys/types', db.getSurveyTypes);
+router.get('/surveys/titles', db.getSurveyTitles);
+
+router.get('/router', db.getRouter);
+router.get('/router/type', db.getRouterType);
+
+router.post('/send', db.insertResults);
+router.post('/login', auth.makeToken);
 
 app.use('/api', router);
 app.listen(3000, () => {

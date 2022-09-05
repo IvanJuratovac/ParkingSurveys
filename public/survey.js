@@ -10,7 +10,7 @@ function sendResults(sender) {
     let results = JSON.stringify(sender.data);
     $.ajax({
         type: 'POST',
-        url: '/send',
+        url: 'send',
         data: {
             "details": results,
             "idcontrols": idcontrols,
@@ -33,8 +33,8 @@ function generateSurvey(id) {
     idcontrols = id;
     titles = [];
     $.ajax({
-        type: 'POST',
-        url: '/surveyNames',
+        type: 'GET',
+        url: 'surveys/names',
         data: {
             "id": id
         },
@@ -49,16 +49,16 @@ function generateSurvey(id) {
         async: false
     });
     $.ajax({
-        type: 'POST',
-        url: '/surveyType',
+        type: 'GET',
+        url: 'surveys/types',
         data: {
             "id": id
         },
         async: true
     });
     $.ajax({
-        type: 'POST',
-        url: '/surveys',
+        type: 'GET',
+        url: 'surveys',
         data: {
             "id": id
         },
@@ -82,8 +82,8 @@ function generateSurvey(id) {
 
 function getTitles() {
     $.ajax({
-        type: 'POST',
-        url: '/titles',
+        type: 'GET',
+        url: 'surveys/titles',
         data: {
             "idrouter": idrouter
         },

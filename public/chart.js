@@ -37,8 +37,8 @@ function jsonLooper(obj) {
 function drawChart(chartTitle, index, key) {
     var response;
     $.ajax({
-        type: 'POST',
-        url: '/results',
+        type: 'GET',
+        url: 'results',
         data: {
             "key": key,
             "idcontrols": idcontrols

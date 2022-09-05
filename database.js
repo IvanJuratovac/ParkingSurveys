@@ -7,7 +7,7 @@ const Jimp = require('jimp');
 //dobivanje tipova pitanja iz određene ankete zbog prilagodbe pretrazivanja
 var type = [];
 const getSurveyTypes = (req, res) => {
-    const { id } = req.body;
+    const { id } = req.query;
     pool.query('select surveyTypes as types from surveyTypes(' + id + ')', (error, results) => {
         if (error) {
             res.status(502);
@@ -20,7 +20,7 @@ const getSurveyTypes = (req, res) => {
 
 //dohvacanje određene ankete 
 const getSurveys = (req, res) => {
-    const { id } = req.body;
+    const { id } = req.query;
     pool.query('select details as title from controls where id=' + id, (error, results) => {
         if (error) {
             res.status(505);
@@ -86,10 +86,9 @@ const insertResults = (req, res) => {
     }
 }
 
-
 //dohvacanje imena anketa za prikaz grafikona
-const getQuestionNames = (req, res) => {
-    const { id } = req.body;
+const getSurveyNames = (req, res) => {
+    const { id } = req.query;
     pool.query('select surveyNames as names from surveyNames(' + id + ')', (error, results) => {
         if (error) {
             res.status(502);
@@ -100,7 +99,7 @@ const getQuestionNames = (req, res) => {
 }
 //dohvacanje titles za anketu kako bi se iscrto grafikon
 const getSurveyTitles = (req, res) => {
-    const { idrouter } = req.body;
+    const { idrouter } = req.query;
     pool.query('select c.id, details->>\'title\' as title from authorizations as a, controls as c where a.idapplication = c.idapplication and idrouter = ' + idrouter, (error, results) => {
         if (error) {
             res.status(508);
@@ -112,8 +111,8 @@ const getSurveyTitles = (req, res) => {
 //po određenom pitanju ide određeni query 
 var index = 0;
 const getResults = (req, res) => {
-    const { key } = req.body;
-    const { idcontrols } = req.body;
+    const { key } = req.query;
+    const { idcontrols } = req.query;
     if (type[index] == "checkbox") {
         pool.query('select count(1), json_array_elements_text(details#>\'{' + key + '}\') as name from transactions where idcontrols=' + idcontrols + ' group by json_array_elements_text(details#>\'{' + key + '}\')', (error, results) => {
             if (error) {
@@ -143,7 +142,7 @@ const getResults = (req, res) => {
 
 var hashedPassword1;
 const hashingF = (req, res) => {
-    const { password } = req.body;
+    const { password } = req.query;
     pool.query('SELECT hashing($1)', [password], (error, results) => {
         if (error) {
             res.status(508);
@@ -153,8 +152,8 @@ const hashingF = (req, res) => {
         res.status(201).json(results.rows);
     })
 }
-const getUser = async (req, res) => {
-    const { email } = req.body;
+const getUser = (req, res) => {
+    const { email } = req.query;
 
     pool.query('select * from users where email=\'' + email + '\' and password=\'' + hashedPassword1 + '\'', (error, results) => {
         if (error) {
@@ -165,12 +164,9 @@ const getUser = async (req, res) => {
     })
 }
 
-
-
-
 const getAuthorization = (req, res) => {
-    const { iduser } = req.body;
-    const { idrouter } = req.body;
+    const { iduser } = req.query;
+    const { idrouter } = req.query;
 
     pool.query('select * from authorizations where iduser= ' + iduser + ' and idrouter=' + idrouter, (error, results) => {
         if (error) {
@@ -182,7 +178,7 @@ const getAuthorization = (req, res) => {
 }
 
 const getRouter = (req, res) => {
-    const { id } = req.body;
+    const { id } = req.query;
 
     pool.query('select getrouter(' + id + ') as name', (error, results) => {
         if (error) {
@@ -194,7 +190,7 @@ const getRouter = (req, res) => {
 }
 
 const getRouterType = (req, res) => {
-    const { id } = req.body;
+    const { id } = req.query;
 
     pool.query('select getroutertype(' + id + ') as name', (error, results) => {
         if (error) {
@@ -209,7 +205,7 @@ module.exports = {
     getResults,
     getSurveyTypes,
     getSurveys,
-    getQuestionNames,
+    getSurveyNames,
     getSurveyTitles,
     getUser,
     getAuthorization,
