@@ -3,6 +3,8 @@ const app = express();
 const db = require('./database');
 const bodyParser = require("body-parser");
 const auth = require('./auth');
+const config = require('./config');
+var cors = require('cors');
 require('dotenv').config();
 
 app.use(bodyParser.json());
@@ -38,3 +40,7 @@ app.use('/api', router);
 app.listen(3000, () => {
     console.log("server is listening on port 3000");
 });
+
+app.use(cors({
+    origin: config.origin
+}));
